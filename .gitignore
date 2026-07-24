@@ -1,0 +1,19 @@
+# Build directory
+
+build/
+
+# Object files
+
+*.o
+
+# Executable
+
+*.exe
+
+# Debug symbols
+
+*.dSYM/
+
+# VS Code local settings
+
+.vscode/*.log
