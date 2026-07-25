@@ -34,7 +34,7 @@ typedef enum NodeType {
     NODE_AND,
     NODE_OR,
     NODE_BACKGROUND,
-    NODE_SUBSHELLPC 
+    NODE_SUBSHELL
 } NodeType;
 
 #endif // !SHELL_TYPES_H
