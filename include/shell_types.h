@@ -37,4 +37,12 @@ typedef enum NodeType {
     NODE_SUBSHELL
 } NodeType;
 
+typedef enum RedirectType {
+    REDIR_INPUT,
+    REDIR_OUTPUT,
+    REDIR_APPEND,
+    REDIR_HEREDOC,
+    
+} RedirectType;
+
 #endif // !SHELL_TYPES_H
