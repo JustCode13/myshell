@@ -17,7 +17,7 @@ typedef enum TokenType {
     TOKEN_AND,
     TOKEN_OR,
     TOKEN_SEMICOLON,
-    TOKEN_BACKWARD,
+    TOKEN_BACKGROUND,
     TOKEN_REDIR_IN,
     TOKEN_REDIR_OUT,
     TOKEN_APPEND,
@@ -27,6 +27,14 @@ typedef enum TokenType {
     TOKEN_END,
 } TokenType;
 
-
+typedef enum NodeType {
+    NODE_COMMAND,
+    NODE_PIPELINE,
+    NODE_SEQUENCE,
+    NODE_AND,
+    NODE_OR,
+    NODE_BACKGROUND,
+    NODE_SUBSHELLPC 
+} NodeType;
 
 #endif // !SHELL_TYPES_H
