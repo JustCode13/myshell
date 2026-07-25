@@ -85,4 +85,16 @@ typedef struct Command {
 
 typedef struct ASTNode ASTNode;
 
+typedef struct Job {
+    pid_t pgid;
+
+    int job_id;
+
+    JobState state;
+
+    char *command_line;
+
+    struct Job *next;
+} Job;
+
 #endif // !SHELL_TYPES_H
