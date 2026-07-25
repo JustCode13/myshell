@@ -73,4 +73,14 @@ typedef struct Redirect {
     Redirect *next; 
 } Redirect;
 
+typedef struct Command {
+    char **argv;
+
+    size_t argc;
+
+    Redirect *redirects;
+
+    bool background;
+} Command;
+
 #endif // !SHELL_TYPES_H
