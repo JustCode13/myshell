@@ -62,4 +62,15 @@ typedef struct Token {
     size_t column;
 } Token;
 
+
+typedef struct Redirect {
+    RedirectType type;
+
+    int fd;
+
+    char *target;
+
+    Redirect *next; 
+} Redirect;
+
 #endif // !SHELL_TYPES_H
