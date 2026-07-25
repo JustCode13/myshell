@@ -50,4 +50,16 @@ typedef enum JobState {
     JOB_DONE,
 } JobState;
 
+typedef struct Token {
+    TokenType token;
+
+    char *text;
+
+    size_t length;
+
+    size_t line;
+
+    size_t column;
+} Token;
+
 #endif // !SHELL_TYPES_H
