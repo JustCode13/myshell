@@ -42,7 +42,12 @@ typedef enum RedirectType {
     REDIR_OUTPUT,
     REDIR_APPEND,
     REDIR_HEREDOC,
-    
 } RedirectType;
+
+typedef enum JobState {
+    JOB_RUNNING,
+    JOB_STOPPED,
+    JOB_DONE,
+} JobState;
 
 #endif // !SHELL_TYPES_H
