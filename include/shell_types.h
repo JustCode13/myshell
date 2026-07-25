@@ -83,4 +83,6 @@ typedef struct Command {
     bool background;
 } Command;
 
+typedef struct ASTNode ASTNode;
+
 #endif // !SHELL_TYPES_H
