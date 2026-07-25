@@ -97,4 +97,6 @@ typedef struct Job {
     struct Job *next;
 } Job;
 
+typedef int (*BuiltInFunction)(int argc, char **argv);
+
 #endif // !SHELL_TYPES_H
