@@ -28,3 +28,18 @@ static void track_allocation(void *ptr, size_t size) {
 
     allocation_table[allocation_count] = ptr;
 }
+
+static void untrack_allocation(void *ptr) {
+    if (ptr == NULL) {
+        return;
+    }
+
+    for (size_t i = 0; i < allocation_count; i++) {
+        if (ptr == allocation_table[i]) {
+            allocation_table[i] = NULL;
+            allocation_count--;
+            return;
+        }
+    }
+    return;
+}
