@@ -1,6 +1,9 @@
 #include "../include/memory.h"
+#include <asm-generic/errno-base.h>
+#include <errno.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 static size_t allocated_bytes; // keeps track of total allocated memory
 
@@ -42,4 +45,21 @@ static void untrack_allocation(void *ptr) {
         }
     }
     return;
+}
+
+void *shell_malloc(size_t size) {
+    if (size == 0) {
+        errno = EINVAL;
+        return NULL;
+    }
+
+    void *memory = malloc(size);
+
+    if (memory == NULL) {
+        return NULL;
+    }
+
+    track_allocation(memory, size);
+
+    return memory;
 }
