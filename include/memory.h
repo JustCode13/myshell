@@ -2,6 +2,10 @@
 #define MEMORY_H
 
 #include <stddef.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdio.h>
+
 
 void *shell_malloc(size_t size);
 
