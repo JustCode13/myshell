@@ -19,3 +19,5 @@ void set_error(ErrorCode code, const char *message) {
 }
 
 ErrorCode error_code(void) { return current_error; }
+
+const char *error_message(void) { return error_buffer; }
