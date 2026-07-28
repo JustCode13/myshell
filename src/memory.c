@@ -1,5 +1,6 @@
 #include "../include/memory.h"
-#include <asm-generic/errno-base.h>
+
+
 #include <errno.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -42,6 +43,7 @@ static void untrack_allocation(void *ptr) {
         if (ptr == allocation_table[i]) {
             allocation_table[i] = NULL;
             allocation_count--;
+            freed_count++;
             return;
         }
     }
@@ -89,3 +91,7 @@ void shell_free(void *ptr) {
 }
 
 size_t memory_allocated_bytes(void) { return allocated_bytes; }
+
+size_t memory_allocated_count(void) { return allocation_count; }
+
+size_t memory_freed_count(void) { return freed_count; }
