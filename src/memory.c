@@ -78,3 +78,12 @@ void *shell_realloc(void *ptr, size_t size) {
 
     return memory;
 }
+
+void shell_free(void *ptr) {
+    if (ptr == NULL) {
+        return;
+    }
+
+    untrack_allocation(ptr);
+    free(ptr);
+}
