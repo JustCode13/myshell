@@ -1,9 +1,9 @@
 #ifndef SHELL_TYPES_H
 #define SHELL_TYPES_H
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdbool.h>
 #include <sys/types.h>
 
 #define SHELL_MAX_ARG 256
@@ -62,7 +62,6 @@ typedef struct Token {
     size_t column;
 } Token;
 
-
 typedef struct Redirect {
     RedirectType type;
 
@@ -70,7 +69,7 @@ typedef struct Redirect {
 
     char *target;
 
-    Redirect *next; 
+    struct Redirect *next;
 } Redirect;
 
 typedef struct Command {
