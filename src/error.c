@@ -17,3 +17,5 @@ void set_error(ErrorCode code, const char *message) {
 
     return;
 }
+
+ErrorCode error_code(void) { return current_error; }
