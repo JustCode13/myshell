@@ -1,4 +1,5 @@
 #include "../include/error.h"
+#include <stddef.h>
 #include <string.h>
 
 static ErrorCode current_error; // stores the current error code
@@ -14,10 +15,14 @@ void set_error(ErrorCode code, const char *message) {
     current_error = code;
 
     strcpy(error_buffer, message);
-
-    return;
 }
 
 ErrorCode error_code(void) { return current_error; }
 
 const char *error_message(void) { return error_buffer; }
+
+void error_clear(void) {
+    current_error = ERR_NONE;
+
+    memset(error_buffer, 0, sizeof(error_buffer));
+}
