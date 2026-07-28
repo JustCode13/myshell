@@ -12,7 +12,7 @@ typedef enum ErrorCode {
 
 void error_set(ErrorCode code, const char *message);
 
-void error_code(ErrorCode code);
+void error_code(void);
 
 const char *error_message(void);
 
