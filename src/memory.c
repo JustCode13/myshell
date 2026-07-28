@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 static size_t allocated_bytes; // keeps track of total allocated memory
@@ -60,6 +61,20 @@ void *shell_malloc(size_t size) {
     }
 
     track_allocation(memory, size);
+
+    return memory;
+}
+
+void *shell_realloc(void *ptr, size_t size) {
+    if (ptr == NULL || size == 0) {
+        return NULL;
+    }
+
+    void *memory = realloc(ptr, size);
+
+    if (memory == NULL) {
+        return NULL;
+    }
 
     return memory;
 }
