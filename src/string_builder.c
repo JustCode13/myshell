@@ -48,4 +48,13 @@ int sb_append_char(StringBuilder *builder, char value) {
     if (builder == NULL || value == NULL) {
         return -1;
     }
+
+    if (ensure_capacity(builder, 1) != 0) {
+        return -1;
+    }
+
+    builder->buffer[builder->length] = value;
+    builder->length++;
+
+    return 0;
 }
