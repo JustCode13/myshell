@@ -45,7 +45,7 @@ int sb_initialize(StringBuilder *builder, size_t capacity) {
 }
 
 int sb_append_char(StringBuilder *builder, char value) {
-    if (builder == NULL || value == NULL) {
+    if (builder == NULL) {
         return -1;
     }
 
@@ -53,8 +53,8 @@ int sb_append_char(StringBuilder *builder, char value) {
         return -1;
     }
 
-    builder->buffer[builder->length] = value;
-    builder->length++;
+    builder->buffer[builder->length++] = value;
+    builder->buffer[builder->length] = '\0';
 
     return 0;
 }
