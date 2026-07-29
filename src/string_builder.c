@@ -99,4 +99,11 @@ char *sb_duplicate(StringBuilder *builder) {
     return des_buffer;
 }
 
-int add;
+void sb_clear(StringBuilder *builder) {
+    if (builder == NULL) {
+        return;
+    }
+
+    builder->length = 0;
+    builder->buffer[0] = '\0';
+}
