@@ -107,3 +107,17 @@ void sb_clear(StringBuilder *builder) {
     builder->length = 0;
     builder->buffer[0] = '\0';
 }
+
+void sb_destroy(StringBuilder *builder) {
+    if (builder == NULL) {
+        return;
+    }
+
+    shell_free(builder->buffer);
+
+    builder->buffer = NULL;
+    builder->length = 0;
+    builder->capacity = 0;
+
+    free(builder);
+}
