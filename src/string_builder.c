@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 
 static int ensure_capacity(StringBuilder *builder, size_t required) {
     if (builder == NULL || required == 0) {
@@ -49,11 +50,30 @@ int sb_append_char(StringBuilder *builder, char value) {
         return -1;
     }
 
-    if (ensure_capacity(builder, 1) != 0) {
+    if (ensure_capacity(builder, 2) != 0) {
         return -1;
     }
 
     builder->buffer[builder->length++] = value;
+    builder->buffer[builder->length] = '\0';
+
+    return 0;
+}
+
+int sb_append_string(StringBuilder *builder, const char *text) {
+    if (builder == NULL || text == NULL) {
+        return -1;
+    }
+
+    size_t text_length = strlen(text);
+
+    if (ensure_capacity(builder, text_length) != 0) {
+        return -1;
+    }
+
+    memcpy(builder->buffer + builder->length, text, text_length);
+
+    builder->length += text_length;
     builder->buffer[builder->length] = '\0';
 
     return 0;
