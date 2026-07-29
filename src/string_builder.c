@@ -25,3 +25,21 @@ static int ensure_capacity(StringBuilder *builder, size_t required) {
 
     return 0;
 }
+
+int sb_initialize(StringBuilder *builder, size_t capacity) {
+    if (builder == NULL || capacity == 0) {
+        return -1;
+    }
+
+    builder->buffer = shell_malloc(capacity);
+
+    if (builder->buffer == NULL) {
+        return -1;
+    }
+
+    builder->capacity = capacity;
+    builder->length = 0;
+    builder->buffer = '\0';
+
+    return 0;
+}
