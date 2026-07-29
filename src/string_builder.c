@@ -78,3 +78,25 @@ int sb_append_string(StringBuilder *builder, const char *text) {
 
     return 0;
 }
+
+char *sb_duplicate(StringBuilder *builder) {
+    if (builder == NULL) {
+        return NULL;
+    }
+
+    char *des_buffer = shell_malloc(builder->length + 1);
+
+    if (des_buffer == NULL) {
+        return NULL;
+    }
+
+    if (builder->buffer == NULL) {
+        return NULL;
+    }
+
+    strcpy(des_buffer, builder->buffer);
+
+    return des_buffer;
+}
+
+int add;
