@@ -113,3 +113,14 @@ int prompt_read_line(char **buffer, size_t *length) {
 
     return 0;
 }
+
+void prompt_update(ShellContext *ctx) {
+    if (ctx == NULL) {
+        return;
+    }
+
+    if (getcwd(ctx->cwd, SHELL_MAX_PATH) == NULL) {
+        ctx->cwd[0] = '\0';
+        return;
+    }
+}
