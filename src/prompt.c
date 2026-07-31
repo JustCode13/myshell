@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 static int read_character(char *output) {
@@ -119,8 +120,16 @@ void prompt_update(ShellContext *ctx) {
         return;
     }
 
-    if (getcwd(ctx->cwd, SHELL_MAX_PATH) == NULL) {
-        ctx->cwd[0] = '\0';
+    char cwd[SHELL_MAX_PATH];
+
+    if (getcwd(cwd, SHELL_MAX_PATH) == NULL) {
         return;
     }
+
+    if (snprintf(ctx->prompt, sizeof(ctx->prompt), "%s+$", cwd) >=
+        (int)sizeof(ctx->prompt)) {
+        return;
+    }
+
+    memcpy(ctx->cwd, cwd, sizeof(cwd));
 }
