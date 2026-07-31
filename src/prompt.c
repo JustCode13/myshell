@@ -65,3 +65,51 @@ int prompt_initialize(ShellContext *ctx) {
 
     return 0;
 }
+
+int prompt_read_line(char **buffer, size_t *length) {
+    if (buffer == NULL || length == NULL) {
+        return -1;
+    }
+
+    *buffer = NULL;
+    *length = 0;
+
+    size_t current_length = 0;
+    size_t capacity = INITIAL_INPUT_SIZE;
+
+    char *new_buffer = shell_malloc(capacity);
+
+    if (new_buffer == NULL) {
+        return -1;
+    }
+
+    char ch;
+
+    while (1) {
+        if (current_length == capacity - 1) {
+            if (expand_input_buffer(&new_buffer, &capacity) != 0) {
+                shell_free(new_buffer);
+                return -1;
+            }
+        }
+
+        if (read_character(&ch) != 0) {
+            shell_free(new_buffer);
+            return -1;
+        }
+
+        if (ch == '\n') {
+            break;
+        }
+
+        new_buffer[current_length] = ch;
+        current_length++;
+    }
+
+    new_buffer[current_length] = '\0';
+
+    *buffer = new_buffer;
+    *length = current_length;
+
+    return 0;
+}
