@@ -54,3 +54,14 @@ static int expand_input_buffer(char **buffer, size_t *capacity) {
 
     return 0;
 }
+
+int prompt_initialize(ShellContext *ctx) {
+    if (ctx == NULL) {
+        return -1;
+    }
+
+    ctx->prompt[0] = '>';
+    ctx->prompt[1] = '\0';
+
+    return 0;
+}
