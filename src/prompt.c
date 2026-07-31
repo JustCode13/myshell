@@ -133,3 +133,11 @@ void prompt_update(ShellContext *ctx) {
 
     memcpy(ctx->cwd, cwd, sizeof(cwd));
 }
+
+const char *prompt_get(const ShellContext *ctx) {
+    if (ctx == NULL) {
+        return NULL;
+    }
+
+    return (const char *)ctx->prompt;
+}
