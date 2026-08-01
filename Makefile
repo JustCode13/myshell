@@ -5,7 +5,13 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror -Iinclude
 
 # Source files
-SRC = main.c src/memory.c tests/test_memory.c
+SRC = main.c \
+      src/memory.c \
+      src/prompt.c \
+      src/error.c \
+      src/string_builder.c \
+      tests/test_memory.c \
+	  tests/test_prompt.c
 
 # Output executable
 TARGET = program
