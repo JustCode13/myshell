@@ -1,9 +1,15 @@
-#include "../include/test.h"
+#include "include/prompt.h"
+#include "include/test.h"
+
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
 
 int main(void) {
-    if (test_memory() == 0) {
-        printf("Worked Successfully!\n");
+
+    if (test_prompt() != 0) {
+        return -1;
     }
 
-    return -1;
+    return 0;
 }
