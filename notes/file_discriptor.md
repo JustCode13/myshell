@@ -6,7 +6,7 @@ FD is nothing but a signed integer
 
 Every open file and input, output stream in a process get a FD 
 just so can we can identify them, the standard FDs are 
-stdin = 0, stdout = 1, stderr = 0 
+stdin = 0, stdout = 1, stderr = 2 
 stdin is the terminal keyboard to get the input
 stdout is the terminal to display the output
 stderr is the terminal to displayy the error
