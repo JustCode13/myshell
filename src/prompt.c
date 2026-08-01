@@ -126,7 +126,7 @@ void prompt_update(ShellContext *ctx) {
         return;
     }
 
-    if (snprintf(ctx->prompt, sizeof(ctx->prompt), "%s+>", cwd) >=
+    if (snprintf(ctx->prompt, sizeof(ctx->prompt), "~%s>", cwd) >=
         (int)sizeof(ctx->prompt)) {
         return;
     }
