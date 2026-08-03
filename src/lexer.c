@@ -43,36 +43,6 @@ static bool is_operator_char(char c) {
 static int append_token(Lexer *lexer, TokenType Type, const char *text,
                         size_t length);
 
-// static int lex_word(Lexer *lexer) {
-//     if (lexer == NULL) {
-//         return -1;
-//     }
-//
-//     char next_char = lexer->input[lexer->position];
-//     char *first_char_add = &lexer->input[lexer->position];
-//     size_t length = 0;
-//
-//     while (next_char != " " || is_operator_char(next_char) != 0) {
-//         length++;
-//         next_char = lexer->input[lexer->position++];
-//     }
-//
-//     const char *text[length];
-//
-//     for (size_t i = 0; i < length; i++) {
-//         size_t current_position = lexer->position - length;
-//         char current_char = lexer->input[current_position];
-//         text[i] = &current_char;
-//         current_position++;
-//     }
-//
-//     if (append_token(lexer, TOKEN_WORD, &text, length) != 0) {
-//         return -1;
-//     }
-//
-//     return 0;
-// }
-
 static int lex_word(Lexer *lexer) {
     if (lexer == NULL || lexer->input == NULL) {
         return -1;
@@ -95,4 +65,3 @@ static int lex_word(Lexer *lexer) {
 
     return 0;
 }
-
