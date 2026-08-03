@@ -59,65 +59,75 @@ static int lex_operator(Lexer *lexer) {
         return -1;
     }
 
-    char current_char = lexer->input[lexer->position];
-    char *current_char_add = lexer->input + lexer->position;
-    char next_char = lexer->input[lexer->position + 1];
+    char operator_start = lexer->input[lexer->position];
+    char *operator_start_add = lexer->input + lexer->position;
+    char next_operator = lexer->input[lexer->position + 1];
 
     TokenType token;
     size_t length;
 
-    if (current_char == '\0' || isspace(current_char) ||
-        !is_operator_char(current_char)) {
+    if (operator_start == '\0' || isspace(operator_start) ||
+        !is_operator_char(operator_start)) {
         return -1;
     }
 
-    switch (current_char) {
+    switch (operator_start) {
     case ('&'): {
-        if (next_char == '&') {
+        if (next_operator == '&') {
             token = TOKEN_AND;
             length = 2;
+        } else {
+            token = TOKEN_BACKGROUND;
+            length = 1;
         }
-
-        token = TOKEN_BACKGROUND;
-        length = 1;
+        break;
     }
     case ('<'): {
-        if (next_char == '<') {
+        if (next_operator == '<') {
             token = TOKEN_HEREDOC;
             length = 2;
+        } else {
+            token = TOKEN_REDIR_IN;
+            length = 1;
         }
-        token = TOKEN_REDIR_IN;
-        length = 1;
+        break;
     }
     case ('>'): {
-        if (next_char == '>') {
+        if (next_operator == '>') {
             token = TOKEN_APPEND;
             length = 2;
+        } else {
+            token = TOKEN_HEREDOC;
+            length = 1;
         }
-        token = REDIR_HEREDOC;
-        length = 1;
+        break;
     }
     case ('|'): {
-        if (next_char == '||') {
+        if (next_operator == "||") {
             token = TOKEN_OR;
             length = 2;
+        } else {
+            token = TOKEN_PIPE;
+            length = 1;
         }
-        token = TOKEN_PIPE;
-        length = 1;
+        break;
     }
     case (';'): {
         token = TOKEN_SEMICOLON;
         length = 1;
+        break;
     }
 
     default:
         return -1;
     }
 
-    if (append_token(lexer, token, (const char *)current_char_add, length) !=
+    if (append_token(lexer, token, (const char *)operator_start_add, length) !=
         0) {
         return -1;
     }
+
+    lexer->position += length;
 
     return 0;
 }
