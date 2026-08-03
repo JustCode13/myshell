@@ -114,5 +114,10 @@ static int lex_operator(Lexer *lexer) {
         return -1;
     }
 
+    if (append_token(lexer, token, (const char *)current_char_add, length) !=
+        0) {
+        return -1;
+    }
+
     return 0;
 }
