@@ -66,5 +66,10 @@ static int lex_operator(Lexer *lexer) {
     TokenType token;
     size_t length;
 
+    if (current_char == '\0' || isspace(current_char) ||
+        !is_operator_char(current_char)) {
+        return -1;
+    }
+
     return 0;
 }
