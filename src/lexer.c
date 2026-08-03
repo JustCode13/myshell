@@ -53,3 +53,11 @@ static int lex_word(Lexer *lexer) {
 
     return 0;
 }
+
+static int lex_operator(Lexer *lexer) {
+    if (lexer == NULL) {
+        return -1;
+    }
+
+    return 0;
+}
