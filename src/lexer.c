@@ -23,18 +23,6 @@ static bool is_operator_char(char c) {
     case ';':
         return true;
 
-    case '(':
-        return true;
-
-    case '{':
-        return true;
-
-    case ')':
-        return true;
-
-    case '}':
-        return true;
-
     default:
         return false;
     }
