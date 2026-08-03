@@ -1,9 +1,11 @@
 #include "../include/lexer.h"
+#include "../include/memory.h"
 #include "../include/string_builder.h"
 
 #include <ctype.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <string.h>
 
 static bool is_operator_char(char c) {
@@ -128,6 +130,15 @@ static int lex_operator(Lexer *lexer) {
     }
 
     lexer->position += length;
+
+    return 0;
+}
+
+static int append_token(Lexer *lexer, TokenType type, const char *text,
+                        size_t length) {
+    if (lexer == NULL || text == NULL || length == 0) {
+        return -1;
+    }
 
     return 0;
 }
