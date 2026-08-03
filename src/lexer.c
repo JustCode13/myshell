@@ -71,5 +71,48 @@ static int lex_operator(Lexer *lexer) {
         return -1;
     }
 
+    switch (current_char) {
+    case ('&'): {
+        if (next_char == '&') {
+            token = TOKEN_AND;
+            length = 2;
+        }
+
+        token = TOKEN_BACKGROUND;
+        length = 1;
+    }
+    case ('<'): {
+        if (next_char == '<') {
+            token = TOKEN_HEREDOC;
+            length = 2;
+        }
+        token = TOKEN_REDIR_IN;
+        length = 1;
+    }
+    case ('>'): {
+        if (next_char == '>') {
+            token = TOKEN_APPEND;
+            length = 2;
+        }
+        token = REDIR_HEREDOC;
+        length = 1;
+    }
+    case ('|'): {
+        if (next_char == '||') {
+            token = TOKEN_OR;
+            length = 2;
+        }
+        token = TOKEN_PIPE;
+        length = 1;
+    }
+    case (';'): {
+        token = TOKEN_SEMICOLON;
+        length = 1;
+    }
+
+    default:
+        return -1;
+    }
+
     return 0;
 }
