@@ -26,8 +26,14 @@ static bool is_operator_char(char c) {
     case '(':
         return true;
 
-        return true;
     case '{':
+        return true;
+
+    case ')':
+        return true;
+
+    case '}':
+        return true;
 
     default:
         return false;
@@ -90,8 +96,3 @@ static int lex_word(Lexer *lexer) {
     return 0;
 }
 
-static int lex_operator(Lexer *lexer) {
-    if (lexer == NULL) {
-        return -1;
-    }
-}
