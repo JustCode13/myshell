@@ -157,5 +157,11 @@ static int append_token(Lexer *lexer, TokenType type, const char *text,
         lexer->capacity = new_capacity;
     }
 
+    strncpy(lexer->tokens[lexer->count].text, text, length);
+
+    if (lexer->tokens[lexer->count].text == NULL) {
+        return -1;
+    }
+
     return 0;
 }
