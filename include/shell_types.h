@@ -51,7 +51,7 @@ typedef enum JobState {
 } JobState;
 
 typedef struct Token {
-    TokenType token;
+    TokenType type;
 
     char *text;
 
