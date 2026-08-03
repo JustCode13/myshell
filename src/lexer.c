@@ -163,5 +163,12 @@ static int append_token(Lexer *lexer, TokenType type, const char *text,
         return -1;
     }
 
+    lexer->tokens[lexer->count].length = length;
+    lexer->tokens[lexer->count].line = lexer->line;
+    lexer->tokens[lexer->count].column = lexer->column;
+    lexer->tokens[lexer->count].type = type;
+
+    lexer->count++;
+
     return 0;
 }
