@@ -63,5 +63,8 @@ static int lex_operator(Lexer *lexer) {
     char *current_char_add = lexer->input + lexer->position;
     char next_char = lexer->input[lexer->position + 1];
 
+    TokenType token;
+    size_t length;
+
     return 0;
 }
