@@ -63,7 +63,7 @@ static int lex_operator(Lexer *lexer) {
     char *operator_start_add = lexer->input + lexer->position;
     char next_operator = lexer->input[lexer->position + 1];
 
-    TokenType token;
+    TokenType type;
     size_t length;
 
     if (operator_start == '\0' || isspace(operator_start) ||
@@ -74,46 +74,46 @@ static int lex_operator(Lexer *lexer) {
     switch (operator_start) {
     case ('&'): {
         if (next_operator == '&') {
-            token = TOKEN_AND;
+            type = TOKEN_AND;
             length = 2;
         } else {
-            token = TOKEN_BACKGROUND;
+            type = TOKEN_BACKGROUND;
             length = 1;
         }
         break;
     }
     case ('<'): {
         if (next_operator == '<') {
-            token = TOKEN_HEREDOC;
+            type = TOKEN_HEREDOC;
             length = 2;
         } else {
-            token = TOKEN_REDIR_IN;
+            type = TOKEN_REDIR_IN;
             length = 1;
         }
         break;
     }
     case ('>'): {
         if (next_operator == '>') {
-            token = TOKEN_APPEND;
+            type = TOKEN_APPEND;
             length = 2;
         } else {
-            token = TOKEN_HEREDOC;
+            type = TOKEN_HEREDOC;
             length = 1;
         }
         break;
     }
     case ('|'): {
         if (next_operator == "||") {
-            token = TOKEN_OR;
+            type = TOKEN_OR;
             length = 2;
         } else {
-            token = TOKEN_PIPE;
+            type = TOKEN_PIPE;
             length = 1;
         }
         break;
     }
     case (';'): {
-        token = TOKEN_SEMICOLON;
+        type = TOKEN_SEMICOLON;
         length = 1;
         break;
     }
@@ -122,7 +122,7 @@ static int lex_operator(Lexer *lexer) {
         return -1;
     }
 
-    if (append_token(lexer, token, (const char *)operator_start_add, length) !=
+    if (append_token(lexer, type, (const char *)operator_start_add, length) !=
         0) {
         return -1;
     }
