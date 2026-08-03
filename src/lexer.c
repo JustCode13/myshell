@@ -59,5 +59,9 @@ static int lex_operator(Lexer *lexer) {
         return -1;
     }
 
+    char current_char = lexer->input[lexer->position];
+    char *current_char_add = lexer->input + lexer->position;
+    char next_char = lexer->input[lexer->position + 1];
+
     return 0;
 }
