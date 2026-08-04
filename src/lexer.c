@@ -218,5 +218,9 @@ int lexer_tokenize(Lexer *lexer) {
         }
     }
 
+    if (append_token(lexer, TOKEN_END, NULL, 0) != 0) {
+        return -1;
+    }
+
     return (int)lexer->count;
 }
