@@ -270,6 +270,9 @@ const char *token_type_name(TokenType type) {
     case TOKEN_AND:
         return "AND";
         break;
+    case TOKEN_OR:
+        return "OR";
+        break;
 
     default:
         return "UNKNOWN";
