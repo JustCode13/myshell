@@ -203,5 +203,20 @@ int lexer_tokenize(Lexer *lexer) {
         return -1;
     }
 
+    while (lexer->input[lexer->position] != '\0') {
+        if (isspace((unsigned char)lexer->input[lexer->position])) {
+            lexer->position++;
+            continue;
+        } else if (is_operator_char(lexer->input[lexer->position])) {
+            if (lex_operator(lexer) != 0) {
+                return -1;
+            }
+        } else {
+            if (lex_word(lexer) != 0) {
+                return -1;
+            }
+        }
+    }
+
     return (int)lexer->count;
 }
