@@ -285,6 +285,9 @@ const char *token_type_name(TokenType type) {
     case TOKEN_REDIR_OUT:
         return "REDIR_OUT";
         break;
+    case TOKEN_APPEND:
+        return "APPEND";
+        break;
 
     default:
         return "UNKNOWN";
