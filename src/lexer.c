@@ -291,6 +291,9 @@ const char *token_type_name(TokenType type) {
     case TOKEN_HEREDOC:
         return "HEREDOC";
         break;
+    case TOKEN_LPAREN:
+        return "LPAREN";
+        break;
 
     default:
         return "UNKNOWN";
