@@ -288,6 +288,9 @@ const char *token_type_name(TokenType type) {
     case TOKEN_APPEND:
         return "APPEND";
         break;
+    case TOKEN_HEREDOC:
+        return "HEREDOC";
+        break;
 
     default:
         return "UNKNOWN";
