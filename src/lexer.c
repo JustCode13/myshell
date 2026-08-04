@@ -224,3 +224,37 @@ int lexer_tokenize(Lexer *lexer) {
 
     return (int)lexer->count;
 }
+
+const Token *lexer_peek(const Lexer *lexer, size_t index) {
+    if (lexer == NULL) {
+        return NULL;
+    }
+
+    if (index >= lexer->count) {
+        return NULL;
+    }
+
+    return &lexer->tokens[index];
+}
+
+void lexer_destroy(Lexer *lexer) {
+    if (lexer == NULL) {
+        return;
+    }
+
+    for (size_t i = 0; i < lexer->count; i++) {
+        free(lexer->tokens[i].text);
+    }
+
+    free(lexer->tokens);
+
+    lexer->tokens = NULL;
+    lexer->input = NULL;
+
+    lexer->line = 0;
+    lexer->column = 0;
+    lexer->count = 0;
+    lexer->capacity = 0;
+
+    return;
+}
