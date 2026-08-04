@@ -276,6 +276,9 @@ const char *token_type_name(TokenType type) {
     case TOKEN_SEMICOLON:
         return "SEMICOLON";
         break;
+    case TOKEN_BACKGROUND:
+        return "BACKGROUND";
+        break;
 
     default:
         return "UNKNOWN";
