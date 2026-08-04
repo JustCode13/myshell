@@ -263,44 +263,30 @@ const char *token_type_name(TokenType type) {
     switch (type) {
     case TOKEN_WORD:
         return "WORD";
-        break;
     case TOKEN_PIPE:
         return "PIPE";
-        break;
     case TOKEN_AND:
         return "AND";
-        break;
     case TOKEN_OR:
         return "OR";
-        break;
     case TOKEN_SEMICOLON:
         return "SEMICOLON";
-        break;
     case TOKEN_BACKGROUND:
         return "BACKGROUND";
-        break;
     case TOKEN_REDIR_IN:
         return "REDIR_IN";
-        break;
     case TOKEN_REDIR_OUT:
         return "REDIR_OUT";
-        break;
     case TOKEN_APPEND:
         return "APPEND";
-        break;
     case TOKEN_HEREDOC:
         return "HEREDOC";
-        break;
     case TOKEN_LPAREN:
         return "LPAREN";
-        break;
     case TOKEN_RPAREN:
         return "RPAREN";
-        break;
     case TOKEN_END:
         return "END";
-        break;
-
     default:
         return "UNKNOWN";
     }
