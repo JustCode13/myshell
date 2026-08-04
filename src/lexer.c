@@ -7,6 +7,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#include <unistd.h>
 
 static bool is_operator_char(char c) {
     switch (c) {
@@ -171,4 +172,28 @@ static int append_token(Lexer *lexer, TokenType type, const char *text,
     lexer->count++;
 
     return 0;
+}
+
+int lexer_initialize(Lexer *lexer, const char *input) {
+    if (lexer == NULL || input == NULL) {
+        return -1;
+    }
+
+    lexer->input = NULL;
+    lexer->position = 0;
+    lexer->line = 1;
+    lexer->column = 1;
+    lexer->tokens = NULL;
+    lexer->count = 0;
+    lexer->capacity = LEXER_INITIAL_CAPACITY;
+
+    lexer->input = input;
+
+    lexer->tokens = shell_malloc(LEXER_INITIAL_CAPACITY * (sizeof(Token)));
+
+    if (lexer->tokens == NULL) {
+        return -1;
+    }
+
+    return -1;
 }
