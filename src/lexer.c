@@ -260,5 +260,9 @@ void lexer_destroy(Lexer *lexer) {
 }
 
 const char *token_type_name(TokenType type) {
-    switch (type) {}
+    switch (type) {
+    case TOKEN_WORD:
+        return "WORD";
+        break;
+    }
 }
