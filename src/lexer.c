@@ -297,6 +297,9 @@ const char *token_type_name(TokenType type) {
     case TOKEN_RPAREN:
         return "RPAREN";
         break;
+    case TOKEN_END:
+        return "END";
+        break;
 
     default:
         return "UNKNOWN";
