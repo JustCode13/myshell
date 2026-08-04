@@ -273,6 +273,9 @@ const char *token_type_name(TokenType type) {
     case TOKEN_OR:
         return "OR";
         break;
+    case TOKEN_SEMICOLON:
+        return "SEMICOLON";
+        break;
 
     default:
         return "UNKNOWN";
