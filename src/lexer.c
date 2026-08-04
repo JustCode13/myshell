@@ -279,6 +279,9 @@ const char *token_type_name(TokenType type) {
     case TOKEN_BACKGROUND:
         return "BACKGROUND";
         break;
+    case TOKEN_REDIR_IN:
+        return "REDIR_IN";
+        break;
 
     default:
         return "UNKNOWN";
