@@ -267,6 +267,9 @@ const char *token_type_name(TokenType type) {
     case TOKEN_PIPE:
         return "PIPE";
         break;
+    case TOKEN_AND:
+        return "AND";
+        break;
 
     default:
         return "UNKNOWN";
