@@ -267,5 +267,8 @@ const char *token_type_name(TokenType type) {
     case TOKEN_PIPE:
         return "PIPE";
         break;
+
+    default:
+        return "UNKNOWN";
     }
 }
