@@ -197,3 +197,11 @@ int lexer_initialize(Lexer *lexer, const char *input) {
 
     return -1;
 }
+
+int lexer_tokenize(Lexer *lexer) {
+    if (lexer == NULL || lexer->input == NULL) {
+        return -1;
+    }
+
+    return (int)lexer->count;
+}
