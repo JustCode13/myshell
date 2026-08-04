@@ -258,3 +258,7 @@ void lexer_destroy(Lexer *lexer) {
 
     return;
 }
+
+const char *token_type_name(TokenType type) {
+    switch (type) {}
+}
