@@ -282,6 +282,9 @@ const char *token_type_name(TokenType type) {
     case TOKEN_REDIR_IN:
         return "REDIR_IN";
         break;
+    case TOKEN_REDIR_OUT:
+        return "REDIR_OUT";
+        break;
 
     default:
         return "UNKNOWN";
