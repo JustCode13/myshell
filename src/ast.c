@@ -22,7 +22,9 @@ static void destroy_redirects(Redirect *head) {
 }
 
 static void print_indent(int depth) {
-    for (int counter = 0; counter < depth; counter++) {
+    int spaces = depth * 4;
+
+    for (int counter = 0; counter < spaces; counter++) {
         printf(" ");
     }
 }
@@ -82,4 +84,6 @@ void ast_print(const ASTNode *root, int depth) {
     if (root == NULL) {
         return;
     }
+
+    print_indent(depth);
 }
