@@ -53,4 +53,8 @@ void ast_destroy(ASTNode *root) {
     if (root == NULL) {
         return;
     }
+
+    ast_destroy(root->left);
+
+    ast_destroy(root->right);
 }
