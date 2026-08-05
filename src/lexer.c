@@ -42,8 +42,8 @@ static int lex_word(Lexer *lexer) {
     size_t start_position = lexer->position;
     const char *start_address = lexer->input + lexer->position;
 
-    while (lexer->input[lexer->position] != '\0' ||
-           !isspace((unsigned char)lexer->input[lexer->position]) ||
+    while (lexer->input[lexer->position] != '\0' &&
+           !isspace((unsigned char)lexer->input[lexer->position]) &&
            !is_operator_char(lexer->input[lexer->position])) {
         lexer->position++;
     }
@@ -63,7 +63,7 @@ static int lex_operator(Lexer *lexer) {
     }
 
     char operator_start = lexer->input[lexer->position];
-    char *operator_start_add = lexer->input + lexer->position;
+    const char *operator_start_add = lexer->input + lexer->position;
     char next_operator = lexer->input[lexer->position + 1];
 
     TokenType type;
@@ -106,7 +106,7 @@ static int lex_operator(Lexer *lexer) {
         break;
     }
     case ('|'): {
-        if (next_operator == "||") {
+        if (next_operator == '|') {
             type = TOKEN_OR;
             length = 2;
         } else {
@@ -137,7 +137,11 @@ static int lex_operator(Lexer *lexer) {
 
 static int append_token(Lexer *lexer, TokenType type, const char *text,
                         size_t length) {
-    if (lexer == NULL || text == NULL || length == 0) {
+    if (lexer == NULL) {
+        return -1;
+    }
+
+    if (type != TOKEN_END && (text == NULL || length == 0)) {
         return -1;
     }
 
@@ -158,11 +162,14 @@ static int append_token(Lexer *lexer, TokenType type, const char *text,
         lexer->capacity = new_capacity;
     }
 
-    strncpy(lexer->tokens[lexer->count].text, text, length);
+    lexer->tokens[lexer->count].text = shell_malloc(length + 1);
 
     if (lexer->tokens[lexer->count].text == NULL) {
         return -1;
     }
+
+    strncpy(lexer->tokens[lexer->count].text, text, length);
+    lexer->tokens[lexer->count].text[length] = '\0';
 
     lexer->tokens[lexer->count].length = length;
     lexer->tokens[lexer->count].line = lexer->line;
@@ -195,7 +202,7 @@ int lexer_initialize(Lexer *lexer, const char *input) {
         return -1;
     }
 
-    return -1;
+    return 0;
 }
 
 int lexer_tokenize(Lexer *lexer) {
@@ -213,12 +220,14 @@ int lexer_tokenize(Lexer *lexer) {
             }
         } else {
             if (lex_word(lexer) != 0) {
+                printf("lex_word failed\n");
                 return -1;
             }
         }
     }
 
     if (append_token(lexer, TOKEN_END, NULL, 0) != 0) {
+        printf("append_token failed\n");
         return -1;
     }
 
