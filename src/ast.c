@@ -120,4 +120,12 @@ void ast_print(const ASTNode *root, int depth) {
         printf("UNKNOWN_NODE\n");
         break;
     }
+
+    if (root->left) {
+        ast_print(root->left, depth + 1);
+    }
+
+    if (root->right) {
+        ast_print(root->right, depth + 1);
+    }
 }
