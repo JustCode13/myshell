@@ -86,4 +86,38 @@ void ast_print(const ASTNode *root, int depth) {
     }
 
     print_indent(depth);
+
+    switch (root->type) {
+    case NODE_COMMAND:
+        printf("NODE_COMMAND\n");
+        break;
+
+    case NODE_PIPELINE:
+        printf("NODE_PIPELINE\n");
+        break;
+
+    case NODE_SEQUENCE:
+        printf("NODE_SEQUENCE\n");
+        break;
+
+    case NODE_AND:
+        printf("NODE_AND\n");
+        break;
+
+    case NODE_OR:
+        printf("NODE_OR\n");
+        break;
+
+    case NODE_BACKGROUND:
+        printf("NODE_BACKGROUND\n");
+        break;
+
+    case NODE_SUBSHELL:
+        printf("NODE_SUBSHELL\n");
+        break;
+
+    default:
+        printf("UNKNOWN_NODE\n");
+        break;
+    }
 }
