@@ -30,4 +30,10 @@ ASTNode *ast_create_node(NodeType type) {
     if (type < NODE_COMMAND || type > NODE_SUBSHELL) {
         return NULL;
     }
+
+    ASTNode *node = shell_malloc(sizeof(ASTNode));
+
+    if (node == NULL) {
+        return NULL;
+    }
 }
