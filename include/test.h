@@ -5,5 +5,6 @@
 
 int test_memory(void);
 int test_prompt(void);
+int test_lexer(void);
 
 #endif // !TEST_H
