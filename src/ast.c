@@ -57,4 +57,18 @@ void ast_destroy(ASTNode *root) {
     ast_destroy(root->left);
 
     ast_destroy(root->right);
+
+    Command *command = &root->command;
+
+    if (command->argv != NULL) {
+        for (size_t i = 0; i < command->argc; i++) {
+            free(command->argv[i]);
+        }
+
+        free(command->argv);
+    }
+
+    if (command->redirects != NULL) {
+        destroy_redirects(command->redirects);
+    }
 }
