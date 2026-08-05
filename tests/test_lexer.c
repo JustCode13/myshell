@@ -77,7 +77,8 @@ int test_lexer(void) {
             printf("Line: %zu\n", token->line);
             printf("Column: %zu\n", token->column);
 
-            printf("--------------------------------------------------------");
+            printf(
+                "--------------------------------------------------------\n");
         }
     }
 
