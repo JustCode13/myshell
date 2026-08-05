@@ -134,4 +134,50 @@ bool ast_validate(const ASTNode *root) {
     if (root == NULL) {
         return true;
     }
+
+    switch (root->type) {
+    case NODE_COMMAND:
+        if (root->left != NULL || root->right != NULL) {
+            return false;
+        }
+        break;
+
+    case NODE_PIPELINE:
+    case NODE_SEQUENCE:
+    case NODE_AND:
+    case NODE_OR:
+        if (root->left == NULL || root->right == NULL) {
+            return false;
+        }
+        break;
+
+    case NODE_BACKGROUND:
+        if (root->left == NULL || root->right != NULL) {
+            return false;
+        }
+        break;
+
+    case NODE_SUBSHELL:
+        if (root->left == NULL || root->right != NULL) {
+            return false;
+        }
+        break;
+
+    default:
+        return false;
+    }
+
+    if (root->left == NULL || root->right == NULL) {
+        return false;
+    }
+
+    if (!ast_validate(root->left)) {
+        return false;
+    }
+
+    if (!ast_validate(root->right)) {
+        return false;
+    }
+
+    return true;
 }
