@@ -36,4 +36,14 @@ ASTNode *ast_create_node(NodeType type) {
     if (node == NULL) {
         return NULL;
     }
+
+    node->type = type;
+
+    node->command = (Command){0};
+
+    node->next = NULL;
+    node->left = NULL;
+    node->right = NULL;
+
+    return node;
 }
