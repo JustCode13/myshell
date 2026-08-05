@@ -46,6 +46,7 @@ static int lex_word(Lexer *lexer) {
            !isspace((unsigned char)lexer->input[lexer->position]) &&
            !is_operator_char(lexer->input[lexer->position])) {
         lexer->position++;
+        lexer->column++;
     }
 
     size_t length = lexer->position - start_position;
@@ -162,19 +163,24 @@ static int append_token(Lexer *lexer, TokenType type, const char *text,
         lexer->capacity = new_capacity;
     }
 
-    lexer->tokens[lexer->count].text = shell_malloc(length + 1);
-
-    if (lexer->tokens[lexer->count].text == NULL) {
+    if (length == SIZE_MAX) {
         return -1;
     }
 
-    strncpy(lexer->tokens[lexer->count].text, text, length);
-    lexer->tokens[lexer->count].text[length] = '\0';
+    lexer->tokens[lexer->count].text = shell_malloc(length + 1);
+    Token *token = &lexer->tokens[lexer->count];
 
-    lexer->tokens[lexer->count].length = length;
-    lexer->tokens[lexer->count].line = lexer->line;
-    lexer->tokens[lexer->count].column = lexer->column;
-    lexer->tokens[lexer->count].type = type;
+    if (token->text == NULL) {
+        return -1;
+    }
+
+    memcpy(token->text, text, length);
+    token->text[length] = '\0';
+
+    token->length = length;
+    token->line = lexer->line;
+    token->column = lexer->column;
+    token->type = type;
 
     lexer->count++;
 
@@ -212,7 +218,13 @@ int lexer_tokenize(Lexer *lexer) {
 
     while (lexer->input[lexer->position] != '\0') {
         if (isspace((unsigned char)lexer->input[lexer->position])) {
-            lexer->position++;
+            if (lexer->input[lexer->position] == '\n') {
+                lexer->line++;
+                lexer->column = 1;
+            } else {
+                lexer->position++;
+            }
+            lexer->column++;
             continue;
         } else if (is_operator_char(lexer->input[lexer->position])) {
             if (lex_operator(lexer) != 0) {
