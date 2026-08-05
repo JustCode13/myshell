@@ -2,16 +2,20 @@
 CC = gcc
 
 # Compiler flags
-CFLAGS = -Wall -Wextra -Werror -Iinclude
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+LDFLAGS = -fsanitize=address
+
 
 # Source files
 SRC = main.c \
       src/memory.c \
       src/prompt.c \
       src/error.c \
+	  src/lexer.c \
       src/string_builder.c \
       tests/test_memory.c \
-	  tests/test_prompt.c
+	  tests/test_prompt.c \
+	  tests/test_lexer.c \
 
 # Output executable
 TARGET = program
