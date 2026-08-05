@@ -1,5 +1,6 @@
 #include "../include/ast.h"
 
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -46,4 +47,10 @@ ASTNode *ast_create_node(NodeType type) {
     node->right = NULL;
 
     return node;
+}
+
+void ast_destroy(ASTNode *root) {
+    if (root == NULL) {
+        return;
+    }
 }
