@@ -77,3 +77,9 @@ void ast_destroy(ASTNode *root) {
 
     return;
 }
+
+void ast_print(const ASTNode *root, int depth) {
+    if (root == NULL) {
+        return;
+    }
+}
