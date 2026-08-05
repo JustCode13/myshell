@@ -7,7 +7,7 @@
 
 int main(void) {
 
-    if (test_prompt() != 0) {
+    if (test_lexer() != 0) {
         return -1;
     }
 
