@@ -71,4 +71,9 @@ void ast_destroy(ASTNode *root) {
     if (command->redirects != NULL) {
         destroy_redirects(command->redirects);
     }
+
+    ast_destroy(root->next);
+    free(root);
+
+    return;
 }
