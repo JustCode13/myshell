@@ -129,3 +129,9 @@ void ast_print(const ASTNode *root, int depth) {
         ast_print(root->right, depth + 1);
     }
 }
+
+bool ast_validate(const ASTNode *root) {
+    if (root == NULL) {
+        return true;
+    }
+}
