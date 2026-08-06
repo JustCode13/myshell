@@ -19,7 +19,7 @@ ASTNode *parser_parse(Parser *parser);
 
 int parser_initialize(Parser *parser, const Lexer *lexer);
 
-void parser_destroy(Parser *parser);
+void parser_destroy(const Parser *parser);
 
 const char *parser_last_error(const Parser *parser);
 
