@@ -31,3 +31,9 @@ const char *parser_last_error(const Parser *parser) {
 
     return parser->error;
 }
+
+ASTNode *parser_parse(Parser *parser) {
+    if (parser == NULL) {
+        return NULL;
+    }
+}
