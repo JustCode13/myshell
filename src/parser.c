@@ -32,8 +32,15 @@ const char *parser_last_error(const Parser *parser) {
     return parser->error;
 }
 
-ASTNode *parser_parse(Parser *parser) {
+void parser_destroy(Parser *parser) {
     if (parser == NULL) {
-        return NULL;
+        return;
     }
+
+    free(parser->error);
+
+    parser->error = NULL;
+    parser->lexer = NULL;
+
+    return;
 }
