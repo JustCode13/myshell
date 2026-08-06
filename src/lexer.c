@@ -101,7 +101,7 @@ static int lex_operator(Lexer *lexer) {
             type = TOKEN_APPEND;
             length = 2;
         } else {
-            type = TOKEN_HEREDOC;
+            type = TOKEN_REDIR_OUT;
             length = 1;
         }
         break;
