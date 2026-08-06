@@ -11,6 +11,8 @@ typedef struct Parser {
     size_t current;
 
     bool panic_mode;
+
+    const char *error;
 } Parser;
 
 ASTNode *parser_parse(Parser *parser);
