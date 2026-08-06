@@ -32,7 +32,7 @@ const char *parser_last_error(const Parser *parser) {
     return parser->error;
 }
 
-void parser_destroy(Parser *parser) {
+void parser_destroy(const Parser *parser) {
     if (parser == NULL) {
         return;
     }
