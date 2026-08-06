@@ -23,3 +23,9 @@ int parser_initialize(Parser *parser, const Lexer *lexer) {
 
     return 0;
 }
+
+const char *parser_last_error(const Parser *parser) {
+    if (parser == NULL) {
+        return NULL;
+    }
+}
