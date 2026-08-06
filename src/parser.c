@@ -19,6 +19,7 @@ int parser_initialize(Parser *parser, const Lexer *lexer) {
     parser->lexer = lexer;
     parser->current = 0;
     parser->panic_mode = false;
+    parser->error = NULL;
 
     return 0;
 }
