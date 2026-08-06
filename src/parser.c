@@ -28,4 +28,6 @@ const char *parser_last_error(const Parser *parser) {
     if (parser == NULL) {
         return NULL;
     }
+
+    return parser->error;
 }
