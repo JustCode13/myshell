@@ -1,6 +1,7 @@
 #ifndef AST_H
 #define AST_H
 
+#include "memory.h"
 #include "shell_types.h"
 
 typedef struct ASTNode {
@@ -22,5 +23,7 @@ void ast_destroy(ASTNode *root);
 void ast_print(const ASTNode *root, int depth);
 
 bool ast_validate(const ASTNode *root);
+
+int use_indent(int depth);
 
 #endif // !AST_H
