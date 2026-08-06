@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-static ASTNode *parser_sequence(Parser *parser) {
+static ASTNode *parse_sequence(Parser *parser) {
     if (parser == NULL) {
         return NULL;
     }
