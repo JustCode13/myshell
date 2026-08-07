@@ -12,6 +12,7 @@ SRC = main.c \
       src/prompt.c \
       src/error.c \
 	  src/lexer.c \
+	  src/ast.c \
       src/string_builder.c \
       tests/test_memory.c \
 	  tests/test_prompt.c \
