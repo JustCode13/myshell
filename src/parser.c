@@ -187,24 +187,30 @@ static ASTNode *parse_command(Parser *parser) {
         return NULL;
     }
 
-    if (lexer->tokens[0].type == TOKEN_SEMICOLON ||
-        lexer->tokens[0].type == TOKEN_AND ||
-        lexer->tokens[0].type == TOKEN_PIPE ||
-        lexer->tokens[0].type == TOKEN_OR ||
-        lexer->tokens[0].type == TOKEN_END) {
+    TokenType type = lexer->tokens[parser->current].type;
+
+    if (type == TOKEN_SEMICOLON || type == TOKEN_AND || type == TOKEN_PIPE ||
+        type == TOKEN_OR || type == TOKEN_END) {
 
         parser->error = "Invalid first token";
+        return NULL;
+    }
 
+    if (parser->current >= lexer->count) {
+        parser->error = "Parser token index out of bounds";
         return NULL;
     }
 
     ASTNode *node = shell_malloc(sizeof(ASTNode));
 
     if (node == NULL) {
-        parser->error = "Enable to allocate memory";
+        parser->error = "Unable to allocate AST node";
 
         return NULL;
     }
 
-    return NULL;
+    node->type = NODE_COMMAND;
+    node->left = NULL;
+    node->right = NULL;
+    node->next = NULL;
 }
