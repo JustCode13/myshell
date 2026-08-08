@@ -56,5 +56,39 @@ static Redirect *append_redirect(Command *command) {
         return NULL;
     }
 
+    Redirect **link = &command->redirects;
+
+    while (*link != NULL) {
+        link = &(*link)->next;
+    }
+
+    *link = shell_malloc(sizeof(**link));
+    if (*link == NULL) {
+        return NULL;
+    }
+
+    (*link)->next = NULL;
+
+    return *link;
 }
 
+/**
+ * Parse redirection operators and their targets into a command.
+ *
+ * Supported redirections:
+ *   <  file   - stdin input
+ *   >  file   - stdout output
+ *   >> file   - stdout append
+ *   << word   - stdin heredoc
+ *
+ * @param parser Parser containing the token stream and current position.
+ * @param command Command receiving the parsed redirections.
+ * @return 0 on success, or -1 on invalid input/allocation failure.
+ */
+static int parse_redirections(Parser *parser, Command *command) {
+    if (parser == NULL || command == NULL || parser->lexer == NULL) {
+        return -1;
+    }
+
+    const Lexer *lexer = parser->lexer;
+}
