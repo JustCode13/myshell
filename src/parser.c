@@ -49,34 +49,4 @@ static int parse_redirections(Parser *parser, Command *command) {
     if (parser == NULL || command == NULL) {
         return -1;
     }
-
-    const Lexer *lexer = parser->lexer;
-
-    while (lexer->tokens[parser->current].type != TOKEN_END) {
-
-        Token *current_token = &lexer->tokens[parser->current];
-        Token *next_token = &lexer->tokens[parser->current + 1];
-
-        if (command->redirects != NULL) {
-            command->redirects->next = shell_malloc(sizeof(Redirect));
-
-            if (command->redirects->next) {
-                return -1;
-            }
-        } else {
-            command->redirects = shell_malloc(sizeof(Redirect));
-
-            if (command->redirects == NULL) {
-                return -1;
-            }
-        }
-
-        switch (current_token) {
-        case (TOKEN_REDIR_IN): {
-            if (next_token->type == TOKEN_WORD) {
-                
-            }
-        }
-        }
-    }
 }
