@@ -236,5 +236,7 @@ static ASTNode *parse_command(Parser *parser) {
             lexer->tokens[parser->current].text;
         node->command.argc += 1;
         node->command.argv[node->command.argc] = NULL;
+
+        parser->current += 1;
     }
 }
