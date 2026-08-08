@@ -174,3 +174,9 @@ static int parse_redirections(Parser *parser, Command *command) {
 
     return 0;
 }
+
+static ASTNode *parse_command(Parser *parser) {
+    if (parser == NULL) {
+        return -1;
+    }
+}
