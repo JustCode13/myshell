@@ -213,4 +213,9 @@ static ASTNode *parse_command(Parser *parser) {
     node->left = NULL;
     node->right = NULL;
     node->next = NULL;
+
+    node->command.argv = NULL;
+    node->command.argc = 0;
+    node->command.redirects = NULL;
+    node->command.background = false;
 }
