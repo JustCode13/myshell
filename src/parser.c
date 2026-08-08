@@ -186,4 +186,15 @@ static ASTNode *parse_command(Parser *parser) {
     if (lexer == NULL) {
         return NULL;
     }
+
+    if (lexer->tokens[0].type == TOKEN_SEMICOLON ||
+        lexer->tokens[0].type == TOKEN_AND ||
+        lexer->tokens[0].type == TOKEN_PIPE ||
+        lexer->tokens[0].type == TOKEN_OR ||
+        lexer->tokens[0].type == TOKEN_END) {
+
+        parser->error = "Invalid first token";
+
+        return NULL;
+    }
 }
