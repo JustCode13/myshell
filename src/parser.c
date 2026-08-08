@@ -197,4 +197,14 @@ static ASTNode *parse_command(Parser *parser) {
 
         return NULL;
     }
+
+    ASTNode *node = shell_malloc(sizeof(ASTNode));
+
+    if (node == NULL) {
+        parser->error = "Enable to allocate memory";
+
+        return NULL;
+    }
+
+    return NULL;
 }
