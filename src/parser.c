@@ -218,4 +218,7 @@ static ASTNode *parse_command(Parser *parser) {
     node->command.argc = 0;
     node->command.redirects = NULL;
     node->command.background = false;
+
+    while (lexer->tokens[parser->current].type == TOKEN_WORD) {
+    }
 }
