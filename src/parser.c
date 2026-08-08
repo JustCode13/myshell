@@ -150,6 +150,23 @@ static int parse_redirections(Parser *parser, Command *command) {
             parser->current += 2;
             break;
 
+        case TOKEN_APPEND:
+            if (next_token->type != TOKEN_WORD) {
+                return -1;
+            }
+
+            current_redirect = append_redirect(command);
+            if (current_redirect == NULL) {
+                return -1;
+            }
+
+            current_redirect->type = REDIR_APPEND;
+            current_redirect->fd = 1;
+            current_redirect->target = next_token->text;
+
+            parser->current += 2;
+            break;
+
         default:
             return 0;
         }
