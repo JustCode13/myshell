@@ -45,8 +45,16 @@ void parser_destroy(Parser *parser) {
     return;
 }
 
-static int parse_redirections(Parser *parser, Command *command) {
-    if (parser == NULL || command == NULL) {
-        return -1;
+/**
+ * Append a new redirection to a command's redirection list.
+ *
+ * @param command Command receiving the new redirection.
+ * @return Pointer to the newly allocated redirection, or NULL on failure.
+ */
+static Redirect *append_redirect(Command *command) {
+    if (command == NULL) {
+        return NULL;
     }
+
 }
+
