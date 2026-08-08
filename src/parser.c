@@ -239,4 +239,12 @@ static ASTNode *parse_command(Parser *parser) {
 
         parser->current += 1;
     }
+
+    if (parse_redirections(parser, &node->command) != 0) {
+        ast_destroy(node);
+
+        return NULL;
+    }
+
+    return node;
 }
