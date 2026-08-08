@@ -91,4 +91,13 @@ static int parse_redirections(Parser *parser, Command *command) {
     }
 
     const Lexer *lexer = parser->lexer;
+
+    while (lexer->tokens[parser->current].type != TOKEN_END) {
+        const Token *current_token = &lexer->tokens[parser->current];
+        const Token *next_token = &lexer->tokens[parser->current + 1];
+
+        Redirect *current_redirect = NULL;
+    }
+
+    return 0;
 }
