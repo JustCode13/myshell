@@ -220,5 +220,7 @@ static ASTNode *parse_command(Parser *parser) {
     node->command.background = false;
 
     while (lexer->tokens[parser->current].type == TOKEN_WORD) {
+        char **new_argv = shell_realloc(
+            node->command.argv, (node->command.argc + 2) * sizeof(*new_argv));
     }
 }
