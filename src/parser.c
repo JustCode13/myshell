@@ -222,5 +222,13 @@ static ASTNode *parse_command(Parser *parser) {
     while (lexer->tokens[parser->current].type == TOKEN_WORD) {
         char **new_argv = shell_realloc(
             node->command.argv, (node->command.argc + 2) * sizeof(*new_argv));
+
+        if (new_argv == NULL) {
+            parser->error = "Unable to allocate argument vector";
+
+            ast_destroy(node);
+
+            return NULL;
+        }
     }
 }
