@@ -2,6 +2,7 @@
 #include "../include/ast.h"
 
 #include <stdlib.h>
+#include <unistd.h>
 
 // static ASTNode *parse_sequence(Parser *parser) {
 //     if (parser == NULL) {
@@ -177,6 +178,12 @@ static int parse_redirections(Parser *parser, Command *command) {
 
 static ASTNode *parse_command(Parser *parser) {
     if (parser == NULL) {
-        return -1;
+        return NULL;
+    }
+
+    Lexer *lexer = parser->lexer;
+
+    if (lexer == NULL) {
+        return NULL;
     }
 }
