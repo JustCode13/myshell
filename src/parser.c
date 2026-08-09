@@ -330,8 +330,18 @@ static ASTNode *parse_logical(Parser *parser) {
         return NULL;
     }
 
+    ASTNode *node = left_node;
+
     while (lexer->tokens[parser->current].type == TOKEN_AND ||
            lexer->tokens[parser->current].type == TOKEN_OR) {
+
+        if (parser->current >= lexer->count) {
+            ast_destroy(left_node);
+            return NULL;
+        }
+
+        parser->current += 1;
+
         ASTNode *right_node = parse_command(parser);
 
         if (right_node == NULL) {
@@ -351,11 +361,16 @@ static ASTNode *parse_logical(Parser *parser) {
         new_node->command.background = false;
 
         if (lexer->tokens[parser->current].type == TOKEN_AND) {
-            new_node->type = TOKEN_AND;
+            new_node->type = NODE_AND;
         } else {
-            new_node->type = TOKEN_OR;
+            new_node->type = NODE_OR;
         }
         new_node->left = left_node;
         new_node->right = right_node;
+
+        left_node = new_node;
+        node = new_node;
     }
+
+    return node;
 }
