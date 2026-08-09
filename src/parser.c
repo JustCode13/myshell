@@ -262,14 +262,14 @@ static ASTNode *parse_pipeline(Parser *parser) {
 
     ASTNode *left_node = parse_command(parser);
 
-    if (left_node != NULL) {
+    if (left_node == NULL) {
         return NULL;
     }
 
-    while (lexer->tokens[parser->current].type == TOKEN_PIPE) {
-        Token *current_token = &lexer->tokens[parser->current];
+    ASTNode *pipeline_node = left_node;
 
-        if (current_token == NULL) {
+    while (lexer->tokens[parser->current].type == TOKEN_PIPE) {
+        if (parser->current >= lexer->count) {
             ast_destroy(left_node);
             return NULL;
         }
@@ -285,24 +285,29 @@ static ASTNode *parse_pipeline(Parser *parser) {
             return NULL;
         }
 
-        ASTNode *pipeline_node = shell_malloc(sizeof(ASTNode));
+        ASTNode *new_pipeline_node = shell_malloc(sizeof(ASTNode));
 
-        if (pipeline_node == NULL) {
+        if (new_pipeline_node == NULL) {
             ast_destroy(left_node);
             ast_destroy(right_node);
 
             return NULL;
         }
 
-        pipeline_node->command.argv = NULL;
-        pipeline_node->command.argc = 0;
-        pipeline_node->command.redirects = NULL;
-        pipeline_node->command.background = false;
+        new_pipeline_node->command.argv = NULL;
+        new_pipeline_node->command.argc = 0;
+        new_pipeline_node->command.redirects = NULL;
+        new_pipeline_node->command.background = false;
 
-        pipeline_node->type = NODE_PIPELINE;
-        pipeline_node->left = left_node;
-        pipeline_node->right = right_node;
+        new_pipeline_node->type = NODE_PIPELINE;
+        new_pipeline_node->left = left_node;
+        new_pipeline_node->right = right_node;
 
         left_node->type = NODE_PIPELINE;
+
+        pipeline_node = new_pipeline_node;
+        left_node = new_pipeline_node;
     }
+
+    return pipeline_node;
 }
