@@ -437,4 +437,12 @@ ASTNode *parser_parse(Parser *parser) {
         parser->error = "Invalid lexer state";
         return NULL;
     }
+
+    ASTNode *root = parse_sequence(parser);
+
+    if (root == NULL) {
+        return NULL;
+    }
+
+    return root;
 }
