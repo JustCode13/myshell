@@ -386,5 +386,12 @@ static ASTNode *parse_sequence(Parser *parser) {
            lexer->tokens[parser->current].type == TOKEN_SEMICOLON) {
 
         parser->current += 1;
+
+        ASTNode *right_node = parse_logical(parser);
+
+        if (right_node == NULL) {
+            ast_destroy(left_node);
+            return NULL;
+        }
     }
 }
