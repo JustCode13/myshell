@@ -316,4 +316,16 @@ static ASTNode *parse_logical(Parser *parser) {
     if (parser == NULL) {
         return NULL;
     }
+
+    ASTNode *left_node = parse_pipeline(parser);
+
+    if (left_node == NULL) {
+        return NULL;
+    }
+
+    Lexer *lexer = parser->lexer;
+
+    if (lexer == NULL) {
+        return NULL;
+    }
 }
