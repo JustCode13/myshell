@@ -400,6 +400,7 @@ static ASTNode *parse_sequence(Parser *parser) {
         if (new_node == NULL) {
             ast_destroy(left_node);
             ast_destroy(right_node);
+            parser->error = "failed to allocate sequence AST node";
             return NULL;
         }
 
