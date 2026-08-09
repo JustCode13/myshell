@@ -311,3 +311,9 @@ static ASTNode *parse_pipeline(Parser *parser) {
 
     return pipeline_node;
 }
+
+static ASTNode *parse_logical(Parser *parser) {
+    if (parser == NULL) {
+        return NULL;
+    }
+}
