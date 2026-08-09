@@ -259,4 +259,10 @@ static ASTNode *parse_pipeline(Parser *parser) {
     if (lexer == NULL) {
         return NULL;
     }
+
+    ASTNode *node = parse_command(parser);
+
+    if (node != NULL) {
+        return NULL;
+    }
 }
