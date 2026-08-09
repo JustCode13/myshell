@@ -380,6 +380,7 @@ static ASTNode *parse_sequence(Parser *parser) {
 
     if (lexer == NULL || lexer->tokens == NULL) {
         ast_destroy(left_node);
+        parser->error = "Invalid lexer state";
         return NULL;
     }
 
@@ -404,12 +405,13 @@ static ASTNode *parse_sequence(Parser *parser) {
             return NULL;
         }
 
+        new_node->type = NODE_SEQUENCE;
+
         new_node->command.argv = NULL;
         new_node->command.argc = 0;
         new_node->command.redirects = NULL;
         new_node->command.background = false;
 
-        new_node->type = NODE_SEQUENCE;
         new_node->left = left_node;
         new_node->right = right_node;
         new_node->next = NULL;
