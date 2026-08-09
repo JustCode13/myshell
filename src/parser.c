@@ -284,5 +284,14 @@ static ASTNode *parse_pipeline(Parser *parser) {
 
             return NULL;
         }
+
+        ASTNode *pipeline_node = shell_malloc(sizeof(ASTNode));
+
+        if (pipeline_node == NULL) {
+            ast_destroy(left_node);
+            ast_destroy(right_node);
+
+            return NULL;
+        }
     }
 }
