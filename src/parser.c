@@ -430,4 +430,11 @@ ASTNode *parser_parse(Parser *parser) {
     if (parser == NULL) {
         return NULL;
     }
+
+    Lexer *lexer = parser->lexer;
+
+    if (lexer == NULL || lexer->tokens) {
+        parser->error = "Invalid lexer state";
+        return NULL;
+    }
 }
