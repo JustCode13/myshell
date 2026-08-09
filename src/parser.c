@@ -260,9 +260,12 @@ static ASTNode *parse_pipeline(Parser *parser) {
         return NULL;
     }
 
-    ASTNode *node = parse_command(parser);
+    ASTNode *left_node = parse_command(parser);
 
-    if (node != NULL) {
+    if (left_node != NULL) {
         return NULL;
+    }
+
+    while (lexer->tokens[parser->current].type == TOKEN_PIPE) {
     }
 }
