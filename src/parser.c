@@ -337,5 +337,11 @@ static ASTNode *parse_logical(Parser *parser) {
             ast_destroy(left_node);
             return NULL;
         }
+
+        ASTNode *new_node = shell_malloc(sizeof(ASTNode));
+
+        if (new_node == NULL) {
+            return NULL;
+        }
     }
 }
