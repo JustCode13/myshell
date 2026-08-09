@@ -212,9 +212,14 @@ int lexer_initialize(Lexer *lexer, const char *input) {
 }
 
 int lexer_tokenize(Lexer *lexer) {
-    if (lexer == NULL || lexer->input == NULL) {
+    if (lexer == NULL || lexer->input == NULL || lexer->tokens == NULL) {
         return -1;
     }
+
+    lexer->position = 0;
+    lexer->line = 1;
+    lexer->column = 1;
+    lexer->count = 0;
 
     while (lexer->input[lexer->position] != '\0') {
         if (isspace((unsigned char)lexer->input[lexer->position])) {
@@ -222,9 +227,10 @@ int lexer_tokenize(Lexer *lexer) {
                 lexer->line++;
                 lexer->column = 1;
             } else {
-                lexer->position++;
+                lexer->column++;
             }
-            lexer->column++;
+
+            lexer->position++;
             continue;
         } else if (is_operator_char(lexer->input[lexer->position])) {
             if (lex_operator(lexer) != 0) {
@@ -232,18 +238,16 @@ int lexer_tokenize(Lexer *lexer) {
             }
         } else {
             if (lex_word(lexer) != 0) {
-                printf("lex_word failed\n");
                 return -1;
             }
         }
     }
 
     if (append_token(lexer, TOKEN_END, NULL, 0) != 0) {
-        printf("append_token failed\n");
         return -1;
     }
 
-    return (int)lexer->count;
+    return 0;
 }
 
 const Token *lexer_peek(const Lexer *lexer, size_t index) {
