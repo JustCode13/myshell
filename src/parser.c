@@ -329,8 +329,8 @@ static ASTNode *parse_logical(Parser *parser) {
         return NULL;
     }
 
-    while (lexer->tokens[parser->current] == TOKEN_AND ||
-           lexer->tokens[parser->current] == TOKEN_OR) {
+    while (lexer->tokens[parser->current].type == TOKEN_AND ||
+           lexer->tokens[parser->current].type == TOKEN_OR) {
         ASTNode *right_node = parse_command(parser);
 
         if (right_node == NULL) {
