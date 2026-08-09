@@ -26,12 +26,24 @@ typedef struct Lexer {
 
 int lexer_initialize(Lexer *lexer, const char *input);
 
+// initializes the lexer with the default values and allocates memory for tokens
+// with LEXER_INITIAL_CAPACITY
+
 int lexer_tokenize(Lexer *lexer);
+
+// creates tokens of inputs for operators and normal words with the help of
+// is_operator_char, lex_operator and lex_word static functions
 
 const Token *lexer_peek(const Lexer *lexer, size_t index);
 
+// returns the tokens on the given index
+
 void lexer_destroy(Lexer *lexer);
 
+// frees every token and destroys the entire lexer
+
 const char *token_type_name(TokenType type);
+
+// return the token type in short and in string format
 
 #endif // !LEXER_H
