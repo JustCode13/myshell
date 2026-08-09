@@ -152,6 +152,11 @@ static int append_token(Lexer *lexer, TokenType type, const char *text,
         }
 
         size_t new_capacity = lexer->capacity * 2;
+
+        if (new_capacity > SIZE_MAX / sizeof(*lexer->tokens)) {
+            return -1;
+        }
+
         Token *temp =
             shell_realloc(lexer->tokens, new_capacity * sizeof(*lexer->tokens));
 
