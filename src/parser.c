@@ -411,6 +411,7 @@ static ASTNode *parse_sequence(Parser *parser) {
         new_node->type = NODE_SEQUENCE;
         new_node->left = left_node;
         new_node->right = right_node;
+        new_node->next = NULL;
 
         left_node = new_node;
     }
