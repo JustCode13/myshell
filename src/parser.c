@@ -273,5 +273,16 @@ static ASTNode *parse_pipeline(Parser *parser) {
             ast_destroy(left_node);
             return NULL;
         }
+
+        parser->current += 1;
+        // now the current will point to the next TOKEN_WORD token
+
+        ASTNode *right_node = parse_command(parser);
+
+        if (right_node == NULL) {
+            ast_destroy(left_node);
+
+            return NULL;
+        }
     }
 }
