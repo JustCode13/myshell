@@ -293,5 +293,11 @@ static ASTNode *parse_pipeline(Parser *parser) {
 
             return NULL;
         }
+
+        pipeline_node->command.argv = NULL;
+        pipeline_node->command.argc = 0;
+        pipeline_node->command.redirects = NULL;
+        pipeline_node->command.background = false;
+
     }
 }
