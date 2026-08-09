@@ -401,5 +401,18 @@ static ASTNode *parse_sequence(Parser *parser) {
             ast_destroy(right_node);
             return NULL;
         }
+
+        new_node->command.argv = NULL;
+        new_node->command.argc = 0;
+        new_node->command.redirects = NULL;
+        new_node->command.background = false;
+
+        new_node->type = NODE_SEQUENCE;
+        new_node->left = left_node;
+        new_node->right = right_node;
+
+        left_node = new_node;
     }
+
+    return left_node;
 }
