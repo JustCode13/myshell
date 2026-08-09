@@ -324,6 +324,8 @@ static ASTNode *parse_logical(Parser *parser) {
     Lexer *lexer = parser->lexer;
 
     if (lexer == NULL || lexer->tokens == NULL) {
+        ast_destroy(left_node);
+        parser->error = "Invalid lexer state";
         return NULL;
     }
 
@@ -346,6 +348,7 @@ static ASTNode *parse_logical(Parser *parser) {
         if (new_node == NULL) {
             ast_destroy(left_node);
             ast_destroy(right_node);
+            parser->error = "failed to allocate sequence AST node";
             return NULL;
         }
 
@@ -358,6 +361,7 @@ static ASTNode *parse_logical(Parser *parser) {
 
         new_node->left = left_node;
         new_node->right = right_node;
+        new_node->next = NULL;
 
         left_node = new_node;
     }
