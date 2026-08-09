@@ -269,11 +269,8 @@ static ASTNode *parse_pipeline(Parser *parser) {
 
     ASTNode *pipeline_node = left_node;
 
-    while (lexer->tokens[parser->current].type == TOKEN_PIPE) {
-        if (parser->current >= lexer->count) {
-            ast_destroy(left_node);
-            return NULL;
-        }
+    while (parser->current < lexer->count &&
+           lexer->tokens[parser->current].type == TOKEN_PIPE) {
 
         parser->current += 1;
         // now the current will point to the next TOKEN_WORD token
@@ -326,23 +323,18 @@ static ASTNode *parse_logical(Parser *parser) {
 
     Lexer *lexer = parser->lexer;
 
-    if (lexer == NULL) {
+    if (lexer == NULL || lexer->tokens == NULL) {
         return NULL;
     }
 
-    ASTNode *node = left_node;
-
-    while (lexer->tokens[parser->current].type == TOKEN_AND ||
-           lexer->tokens[parser->current].type == TOKEN_OR) {
-
-        if (parser->current >= lexer->count) {
-            ast_destroy(left_node);
-            return NULL;
-        }
+    while (parser->current < lexer->count &&
+           (lexer->tokens[parser->current].type == TOKEN_AND ||
+            lexer->tokens[parser->current].type == TOKEN_OR)) {
+        TokenType type = lexer->tokens[parser->current].type;
 
         parser->current += 1;
 
-        ASTNode *right_node = parse_command(parser);
+        ASTNode *right_node = parse_pipeline(parser);
 
         if (right_node == NULL) {
             ast_destroy(left_node);
@@ -352,6 +344,8 @@ static ASTNode *parse_logical(Parser *parser) {
         ASTNode *new_node = shell_malloc(sizeof(ASTNode));
 
         if (new_node == NULL) {
+            ast_destroy(left_node);
+            ast_destroy(right_node);
             return NULL;
         }
 
@@ -360,17 +354,13 @@ static ASTNode *parse_logical(Parser *parser) {
         new_node->command.redirects = NULL;
         new_node->command.background = false;
 
-        if (lexer->tokens[parser->current].type == TOKEN_AND) {
-            new_node->type = NODE_AND;
-        } else {
-            new_node->type = NODE_OR;
-        }
+        new_node->type = (type == TOKEN_AND) ? NODE_AND : NODE_OR;
+
         new_node->left = left_node;
         new_node->right = right_node;
 
         left_node = new_node;
-        node = new_node;
     }
 
-    return node;
+    return left_node;
 }
