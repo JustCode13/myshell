@@ -15,4 +15,9 @@ int test_parser(void) {
         fprintf(stderr, "Lexer Initialize Failed\n");
         return EXIT_FAILURE;
     }
+
+    if (lexer_tokenize(lexer) != 0) {
+        fprintf(stderr, "Lexer Tokenization Failed\n");
+        return EXIT_FAILURE;
+    }
 }
