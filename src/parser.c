@@ -393,5 +393,13 @@ static ASTNode *parse_sequence(Parser *parser) {
             ast_destroy(left_node);
             return NULL;
         }
+
+        ASTNode *new_node = shell_malloc(sizeof(ASTNode));
+
+        if (new_node == NULL) {
+            ast_destroy(left_node);
+            ast_destroy(right_node);
+            return NULL;
+        }
     }
 }
