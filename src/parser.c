@@ -384,5 +384,7 @@ static ASTNode *parse_sequence(Parser *parser) {
 
     while (parser->current < lexer->count &&
            lexer->tokens[parser->current].type == TOKEN_SEMICOLON) {
+
+        parser->current += 1;
     }
 }
