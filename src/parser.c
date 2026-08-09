@@ -1,6 +1,7 @@
 #include "../include/parser.h"
 #include "../include/ast.h"
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -343,5 +344,10 @@ static ASTNode *parse_logical(Parser *parser) {
         if (new_node == NULL) {
             return NULL;
         }
+
+        new_node->command.argv = NULL;
+        new_node->command.argc = 0;
+        new_node->command.redirects = NULL;
+        new_node->command.background = false;
     }
 }
