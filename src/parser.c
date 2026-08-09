@@ -267,5 +267,11 @@ static ASTNode *parse_pipeline(Parser *parser) {
     }
 
     while (lexer->tokens[parser->current].type == TOKEN_PIPE) {
+        Token *current_token = &lexer->tokens[parser->current];
+
+        if (current_token == NULL) {
+            ast_destroy(left_node);
+            return NULL;
+        }
     }
 }
