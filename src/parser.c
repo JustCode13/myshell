@@ -369,4 +369,10 @@ static ASTNode *parse_sequence(Parser *parser) {
     if (parser == NULL) {
         return NULL;
     }
+
+    ASTNode *left_node = parse_logical(parser);
+
+    if (left_node == NULL) {
+        return NULL;
+    }
 }
