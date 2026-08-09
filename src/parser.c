@@ -425,3 +425,9 @@ static ASTNode *parse_sequence(Parser *parser) {
 
     return left_node;
 }
+
+ASTNode *parser_parse(Parser *parser) {
+    if (parser == NULL) {
+        return NULL;
+    }
+}
