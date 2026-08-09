@@ -248,3 +248,9 @@ static ASTNode *parse_command(Parser *parser) {
 
     return node;
 }
+
+static ASTNode *parse_pipeline(Parser *parser) {
+    if (parser == NULL) {
+        return NULL;
+    }
+}
