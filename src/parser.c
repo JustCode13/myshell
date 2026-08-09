@@ -350,6 +350,11 @@ static ASTNode *parse_logical(Parser *parser) {
         new_node->command.redirects = NULL;
         new_node->command.background = false;
 
+        if (lexer->tokens[parser->current].type == TOKEN_AND) {
+            new_node->type = TOKEN_AND;
+        } else {
+            new_node->type = TOKEN_OR;
+        }
         new_node->left = left_node;
         new_node->right = right_node;
     }
