@@ -299,5 +299,10 @@ static ASTNode *parse_pipeline(Parser *parser) {
         pipeline_node->command.redirects = NULL;
         pipeline_node->command.background = false;
 
+        pipeline_node->type = NODE_PIPELINE;
+        pipeline_node->left = left_node;
+        pipeline_node->right = right_node;
+
+        left_node->type = NODE_PIPELINE;
     }
 }
