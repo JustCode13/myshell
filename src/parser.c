@@ -433,7 +433,7 @@ ASTNode *parser_parse(Parser *parser) {
 
     Lexer *lexer = parser->lexer;
 
-    if (lexer == NULL || lexer->tokens) {
+    if (lexer == NULL || lexer->tokens == NULL) {
         parser->error = "Invalid lexer state";
         return NULL;
     }
@@ -441,6 +441,12 @@ ASTNode *parser_parse(Parser *parser) {
     ASTNode *root = parse_sequence(parser);
 
     if (root == NULL) {
+        return NULL;
+    }
+
+    if (parser->current < lexer->count) {
+        parser->error = "Unexpected trailing tokens";
+        ast_destroy(root);
         return NULL;
     }
 
