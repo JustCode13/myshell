@@ -349,5 +349,8 @@ static ASTNode *parse_logical(Parser *parser) {
         new_node->command.argc = 0;
         new_node->command.redirects = NULL;
         new_node->command.background = false;
+
+        new_node->left = left_node;
+        new_node->right = right_node;
     }
 }
