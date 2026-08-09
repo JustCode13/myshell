@@ -381,4 +381,8 @@ static ASTNode *parse_sequence(Parser *parser) {
     if (lexer == NULL || lexer->tokens == NULL) {
         return NULL;
     }
+
+    while (parser->current < lexer->count &&
+           lexer->tokens[parser->current].type == TOKEN_SEMICOLON) {
+    }
 }
