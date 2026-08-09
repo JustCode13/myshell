@@ -207,6 +207,10 @@ int lexer_initialize(Lexer *lexer, const char *input) {
 
     lexer->input = input;
 
+    if (LEXER_INITIAL_CAPACITY > SIZE_MAX / sizeof(Token)) {
+        return -1;
+    }
+
     lexer->tokens = shell_malloc(LEXER_INITIAL_CAPACITY * (sizeof(Token)));
 
     if (lexer->tokens == NULL) {
