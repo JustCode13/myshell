@@ -375,4 +375,10 @@ static ASTNode *parse_sequence(Parser *parser) {
     if (left_node == NULL) {
         return NULL;
     }
+
+    Lexer *lexer = parser->lexer;
+
+    if (lexer == NULL || lexer->tokens == NULL) {
+        return NULL;
+    }
 }
