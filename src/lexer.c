@@ -70,7 +70,7 @@ static int lex_operator(Lexer *lexer) {
     TokenType type;
     size_t length;
 
-    if (operator_start == '\0' || isspace(operator_start) ||
+    if (operator_start == '\0' || isspace((unsigned char)operator_start) ||
         !is_operator_char(operator_start)) {
         return -1;
     }
@@ -277,10 +277,10 @@ void lexer_destroy(Lexer *lexer) {
     }
 
     for (size_t i = 0; i < lexer->count; i++) {
-        free(lexer->tokens[i].text);
+        shell_free(lexer->tokens[i].text);
     }
 
-    free(lexer->tokens);
+    shell_free(lexer->tokens);
 
     lexer->tokens = NULL;
     lexer->input = NULL;
