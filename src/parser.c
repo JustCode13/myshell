@@ -151,7 +151,18 @@ static int parse_redirections(Parser *parser, Command *command) {
 
             current_redirect->type = REDIR_OUTPUT;
             current_redirect->fd = 1;
-            current_redirect->target = next_token->text;
+
+            length = next_token->length;
+
+            text = shell_malloc(length + 1);
+
+            if (text == NULL) {
+                return -1;
+            }
+
+            memcpy(text, next_token->text, length + 1);
+
+            current_redirect->target = text;
 
             parser->current += 2;
             break;
@@ -168,7 +179,18 @@ static int parse_redirections(Parser *parser, Command *command) {
 
             current_redirect->type = REDIR_HEREDOC;
             current_redirect->fd = 0;
-            current_redirect->target = next_token->text;
+
+            length = next_token->length;
+
+            text = shell_malloc(length + 1);
+
+            if (text == NULL) {
+                return -1;
+            }
+
+            memcpy(text, next_token->text, length + 1);
+
+            current_redirect->target = text;
 
             parser->current += 2;
             break;
@@ -185,7 +207,18 @@ static int parse_redirections(Parser *parser, Command *command) {
 
             current_redirect->type = REDIR_APPEND;
             current_redirect->fd = 1;
-            current_redirect->target = next_token->text;
+
+            length = next_token->length;
+
+            text = shell_malloc(length + 1);
+
+            if (text == NULL) {
+                return -1;
+            }
+
+            memcpy(text, next_token->text, length + 1);
+
+            current_redirect->target = text;
 
             parser->current += 2;
             break;
