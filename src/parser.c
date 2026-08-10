@@ -98,7 +98,13 @@ static int parse_redirections(Parser *parser, Command *command) {
     const Lexer *lexer = parser->lexer;
 
     while (lexer->tokens[parser->current].type != TOKEN_END) {
+
+        if (parser->current + 1 >= lexer->count) {
+            return -1;
+        }
+
         const Token *current_token = &lexer->tokens[parser->current];
+
         const Token *next_token = &lexer->tokens[parser->current + 1];
 
         Redirect *current_redirect = NULL;
@@ -202,17 +208,17 @@ static ASTNode *parse_command(Parser *parser) {
         return NULL;
     }
 
+    if (parser->current >= lexer->count) {
+        parser->error = "Parser token index out of bounds";
+        return NULL;
+    }
+
     TokenType type = lexer->tokens[parser->current].type;
 
     if (type == TOKEN_SEMICOLON || type == TOKEN_AND || type == TOKEN_PIPE ||
         type == TOKEN_OR || type == TOKEN_END) {
 
         parser->error = "Invalid first token";
-        return NULL;
-    }
-
-    if (parser->current >= lexer->count) {
-        parser->error = "Parser token index out of bounds";
         return NULL;
     }
 
@@ -359,7 +365,8 @@ static ASTNode *parse_logical(Parser *parser) {
             return NULL;
         }
 
-        ASTNode *new_node = shell_malloc(sizeof(ASTNode));
+        ASTNode *new_node =
+            ast_create_node(type == TOKEN_AND ? NODE_AND : NODE_OR);
 
         if (new_node == NULL) {
             ast_destroy(left_node);
@@ -368,16 +375,10 @@ static ASTNode *parse_logical(Parser *parser) {
             return NULL;
         }
 
-        new_node->command.argv = NULL;
-        new_node->command.argc = 0;
-        new_node->command.redirects = NULL;
-        new_node->command.background = false;
-
         new_node->type = (type == TOKEN_AND) ? NODE_AND : NODE_OR;
 
         new_node->left = left_node;
         new_node->right = right_node;
-        new_node->next = NULL;
 
         left_node = new_node;
     }
@@ -416,7 +417,7 @@ static ASTNode *parse_sequence(Parser *parser) {
             return NULL;
         }
 
-        ASTNode *new_node = shell_malloc(sizeof(ASTNode));
+        ASTNode *new_node = ast_create_node(NODE_SEQUENCE);
 
         if (new_node == NULL) {
             ast_destroy(left_node);
@@ -425,16 +426,8 @@ static ASTNode *parse_sequence(Parser *parser) {
             return NULL;
         }
 
-        new_node->type = NODE_SEQUENCE;
-
-        new_node->command.argv = NULL;
-        new_node->command.argc = 0;
-        new_node->command.redirects = NULL;
-        new_node->command.background = false;
-
         new_node->left = left_node;
         new_node->right = right_node;
-        new_node->next = NULL;
 
         left_node = new_node;
     }
