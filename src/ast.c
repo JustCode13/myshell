@@ -167,10 +167,6 @@ bool ast_validate(const ASTNode *root) {
         return false;
     }
 
-    if (root->left == NULL || root->right == NULL) {
-        return false;
-    }
-
     if (!ast_validate(root->left)) {
         return false;
     }
