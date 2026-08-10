@@ -71,3 +71,53 @@ static int run_test(const ParserTest *test, size_t number) {
 
     return EXIT_SUCCESS;
 }
+
+int test_parser(void) {
+    const ParserTest tests[] = {
+
+        {"pwd", "Simple command"},
+
+        {"echo hello world", "Command with arguments"},
+
+        {"cat < input.txt", "Input redirection"},
+
+        {"echo hello > output.txt", "Output redirection"},
+
+        {"echo hello >> output.txt", "Append redirection"},
+
+        {"cat << EOF", "Heredoc"},
+
+        {"ls | grep .c", "Pipeline"},
+
+        {"pwd && ls", "Logical AND"},
+
+        {"pwd || ls", "Logical OR"},
+
+        {"pwd ; ls", "Command sequence"},
+
+        {"cat file.txt | grep hello > result.txt", "Pipeline with redirection"},
+
+        {"cat file.txt | grep hello && echo found",
+         "Pipeline with logical AND"},
+
+        {"echo hello > out.txt ; cat < out.txt", "Sequence with redirections"},
+
+        {"cat input.txt | grep hello > output.txt && echo done || echo failed "
+         "; pwd",
+         "Pipeline with redirection, AND, OR and sequence"}};
+
+    size_t test_count = sizeof(tests) / sizeof(tests[0]);
+    size_t passed = 0;
+
+    for (size_t i = 0; i < test_count; i++) {
+        if (run_test(&tests[i], i + 1) == EXIT_SUCCESS) {
+            passed++;
+        }
+    }
+
+    printf("\n");
+    printf("Tests: %zu | Passed: %zu | Failed: %zu\n", test_count, passed,
+           test_count - passed);
+
+    return passed == test_count ? EXIT_SUCCESS : EXIT_FAILURE;
+}
