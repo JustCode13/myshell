@@ -2,7 +2,10 @@
 #include "../include/ast.h"
 
 #include <stdbool.h>
+#include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 // static ASTNode *parse_sequence(Parser *parser) {
@@ -39,10 +42,10 @@ void parser_destroy(Parser *parser) {
         return;
     }
 
-    free(parser->error);
-
     parser->error = NULL;
     parser->lexer = NULL;
+    parser->current = 0;
+    parser->panic_mode = false;
 
     return;
 }
@@ -113,7 +116,18 @@ static int parse_redirections(Parser *parser, Command *command) {
 
             current_redirect->type = REDIR_INPUT;
             current_redirect->fd = 0;
-            current_redirect->target = next_token->text;
+
+            size_t length = next_token->length;
+
+            char *text = shell_malloc(length + 1);
+
+            if (text == NULL) {
+                return -1;
+            }
+
+            memcpy(text, next_token->text, length + 1);
+
+            current_redirect->target = text;
 
             parser->current += 2;
             break;
@@ -182,7 +196,7 @@ static ASTNode *parse_command(Parser *parser) {
         return NULL;
     }
 
-    Lexer *lexer = parser->lexer;
+    const Lexer *lexer = parser->lexer;
 
     if (lexer == NULL) {
         return NULL;
@@ -232,11 +246,20 @@ static ASTNode *parse_command(Parser *parser) {
             return NULL;
         }
 
-        node->command.argv = new_argv;
-        node->command.argv[node->command.argc] =
-            lexer->tokens[parser->current].text;
+        size_t length = lexer->tokens[parser->current].length;
+
+        char *argument = shell_malloc(length + 1);
+
+        if (argument == NULL) {
+            parser->error = "Unable to allocate argument";
+            ast_destroy(node);
+            return NULL;
+        }
+
+        memcpy(argument, lexer->tokens[parser->current].text, length + 1);
+
+        node->command.argv[node->command.argc] = argument;
         node->command.argc += 1;
-        node->command.argv[node->command.argc] = NULL;
 
         parser->current += 1;
     }
@@ -255,7 +278,7 @@ static ASTNode *parse_pipeline(Parser *parser) {
         return NULL;
     }
 
-    Lexer *lexer = parser->lexer;
+    const Lexer *lexer = parser->lexer;
 
     if (lexer == NULL) {
         return NULL;
@@ -283,7 +306,7 @@ static ASTNode *parse_pipeline(Parser *parser) {
             return NULL;
         }
 
-        ASTNode *new_pipeline_node = shell_malloc(sizeof(ASTNode));
+        ASTNode *new_pipeline_node = ast_create_node(NODE_PIPELINE);
 
         if (new_pipeline_node == NULL) {
             ast_destroy(left_node);
@@ -292,16 +315,9 @@ static ASTNode *parse_pipeline(Parser *parser) {
             return NULL;
         }
 
-        new_pipeline_node->command.argv = NULL;
-        new_pipeline_node->command.argc = 0;
-        new_pipeline_node->command.redirects = NULL;
-        new_pipeline_node->command.background = false;
-
         new_pipeline_node->type = NODE_PIPELINE;
         new_pipeline_node->left = left_node;
         new_pipeline_node->right = right_node;
-
-        left_node->type = NODE_PIPELINE;
 
         pipeline_node = new_pipeline_node;
         left_node = new_pipeline_node;
@@ -321,7 +337,7 @@ static ASTNode *parse_logical(Parser *parser) {
         return NULL;
     }
 
-    Lexer *lexer = parser->lexer;
+    const Lexer *lexer = parser->lexer;
 
     if (lexer == NULL || lexer->tokens == NULL) {
         ast_destroy(left_node);
@@ -380,7 +396,7 @@ static ASTNode *parse_sequence(Parser *parser) {
         return NULL;
     }
 
-    Lexer *lexer = parser->lexer;
+    const Lexer *lexer = parser->lexer;
 
     if (lexer == NULL || lexer->tokens == NULL) {
         ast_destroy(left_node);
@@ -431,7 +447,7 @@ ASTNode *parser_parse(Parser *parser) {
         return NULL;
     }
 
-    Lexer *lexer = parser->lexer;
+    const Lexer *lexer = parser->lexer;
 
     if (lexer == NULL || lexer->tokens == NULL) {
         parser->error = "Invalid lexer state";
@@ -444,7 +460,8 @@ ASTNode *parser_parse(Parser *parser) {
         return NULL;
     }
 
-    if (parser->current < lexer->count) {
+    if (parser->current < lexer->count &&
+        lexer->tokens[parser->current].type != TOKEN_END) {
         parser->error = "Unexpected trailing tokens";
         ast_destroy(root);
         return NULL;
