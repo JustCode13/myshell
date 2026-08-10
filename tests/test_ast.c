@@ -17,3 +17,5 @@ static void test_result(const char *name, bool passed) {
         printf("[FAIL] %s\n", name);
     }
 }
+
+static ASTNode *create_command(void) { return ast_create_node(NODE_COMMAND); }
