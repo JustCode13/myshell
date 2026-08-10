@@ -20,19 +20,6 @@ static void test_result(const char *name, bool passed) {
 
 static ASTNode *create_command(void) { return ast_create_node(NODE_COMMAND); }
 
-static void test_create_node(void) {
-    ASTNode *node = ast_create_node(NODE_COMMAND);
-
-    bool passed = node != NULL && node->type == NODE_COMMAND &&
-                  node->left == NULL && node->right == NULL &&
-                  node->next == NULL && node->command.argv == NULL &&
-                  node->command.argc == 0 && node->command.redirects == NULL;
-
-    test_result("Create command node", passed);
-
-    ast_destroy(node);
-}
-
 static void test_create_all_nodes(void) {
     bool passed = true;
 
@@ -169,7 +156,6 @@ static void test_destroy(void) {
 }
 
 int test_ast(void) {
-    test_create_node();
     test_create_all_nodes();
     test_invalid_node_type();
     test_validation();
