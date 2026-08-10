@@ -198,21 +198,41 @@ static int parse_redirections(Parser *parser, Command *command) {
 }
 
 static ASTNode *parse_command(Parser *parser) {
+    /*
+     * Validate the parser itself.
+     */
     if (parser == NULL) {
         return NULL;
     }
 
+    /*
+     * The parser must have a lexer.
+     */
     const Lexer *lexer = parser->lexer;
 
     if (lexer == NULL) {
         return NULL;
     }
 
+    /*
+     * Make sure the current token index is valid.
+     */
     if (parser->current >= lexer->count) {
         parser->error = "Parser token index out of bounds";
         return NULL;
     }
 
+    /*
+     * A command must not start with an operator.
+     *
+     * Examples of invalid command starts:
+     *
+     *     ;
+     *     &&
+     *     ||
+     *     |
+     *     END
+     */
     TokenType type = lexer->tokens[parser->current].type;
 
     if (type == TOKEN_SEMICOLON || type == TOKEN_AND || type == TOKEN_PIPE ||
@@ -222,27 +242,46 @@ static ASTNode *parse_command(Parser *parser) {
         return NULL;
     }
 
-    ASTNode *node = shell_malloc(sizeof(ASTNode));
+    /*
+     * Allocate the AST node for the command.
+     */
+    ASTNode *node = ast_create_node(NODE_COMMAND);
 
     if (node == NULL) {
         parser->error = "Unable to allocate AST node";
-
         return NULL;
     }
 
-    node->type = NODE_COMMAND;
-    node->left = NULL;
-    node->right = NULL;
-    node->next = NULL;
+    /*
+     * Parse command arguments.
+     *
+     * Example:
+     *
+     *     echo hello world
+     *
+     * becomes:
+     *
+     *     argv[0] = "echo"
+     *     argv[1] = "hello"
+     *     argv[2] = "world"
+     *     argv[3] = NULL
+     */
+    while (parser->current < lexer->count &&
+           lexer->tokens[parser->current].type == TOKEN_WORD) {
 
-    node->command.argv = NULL;
-    node->command.argc = 0;
-    node->command.redirects = NULL;
-    node->command.background = false;
+        const Token *token = &lexer->tokens[parser->current];
 
-    while (lexer->tokens[parser->current].type == TOKEN_WORD) {
-        char **new_argv = shell_realloc(
-            node->command.argv, (node->command.argc + 2) * sizeof(*new_argv));
+        /*
+         * Allocate space for:
+         *
+         *     existing arguments
+         *     + new argument
+         *     + NULL terminator
+         */
+        size_t new_count = node->command.argc + 2;
+
+        char **new_argv =
+            shell_realloc(node->command.argv, new_count * sizeof(*new_argv));
 
         if (new_argv == NULL) {
             parser->error = "Unable to allocate argument vector";
@@ -252,29 +291,64 @@ static ASTNode *parse_command(Parser *parser) {
             return NULL;
         }
 
+        /*
+         * Update argv only after realloc succeeds.
+         */
         node->command.argv = new_argv;
 
-        size_t length = lexer->tokens[parser->current].length;
+        /*
+         * Allocate memory for the argument string.
+         *
+         * +1 is for the terminating '\0'.
+         */
+        size_t length = token->length;
 
         char *argument = shell_malloc(length + 1);
 
         if (argument == NULL) {
             parser->error = "Unable to allocate argument";
+
             ast_destroy(node);
+
             return NULL;
         }
 
-        memcpy(argument, lexer->tokens[parser->current].text, length + 1);
+        /*
+         * Copy the token text into our own memory.
+         */
+        memcpy(argument, token->text, length);
 
+        /*
+         * Explicitly terminate the string.
+         */
+        argument[length] = '\0';
+
+        /*
+         * Store the argument.
+         */
         node->command.argv[node->command.argc] = argument;
-        node->command.argc += 1;
 
-        parser->current += 1;
+        /*
+         * Increase argument count.
+         */
+        node->command.argc++;
+
+        /*
+         * Keep argv NULL-terminated.
+         */
+        node->command.argv[node->command.argc] = NULL;
+
+        /*
+         * Move to the next token.
+         */
+        parser->current++;
     }
 
+    /*
+     * Parse redirections belonging to this command.
+     */
     if (parse_redirections(parser, &node->command) != 0) {
         ast_destroy(node);
-
         return NULL;
     }
 
