@@ -97,7 +97,8 @@ static int parse_redirections(Parser *parser, Command *command) {
 
     const Lexer *lexer = parser->lexer;
 
-    while (lexer->tokens[parser->current].type != TOKEN_END) {
+    while (parser->current < lexer->count &&
+           lexer->tokens[parser->current].type != TOKEN_END) {
 
         if (parser->current + 1 >= lexer->count) {
             return -1;
