@@ -252,6 +252,8 @@ static ASTNode *parse_command(Parser *parser) {
             return NULL;
         }
 
+        node->command.argv = new_argv;
+
         size_t length = lexer->tokens[parser->current].length;
 
         char *argument = shell_malloc(length + 1);
