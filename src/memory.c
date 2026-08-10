@@ -88,6 +88,7 @@ void shell_free(void *ptr) {
     }
 
     untrack_allocation(ptr);
+    free(ptr);
 }
 
 size_t memory_allocated_bytes(void) { return allocated_bytes; }
