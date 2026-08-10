@@ -32,3 +32,21 @@ static void test_create_node(void) {
 
     ast_destroy(node);
 }
+
+static void test_create_all_nodes(void) {
+    bool passed = true;
+
+    for (NodeType type = NODE_COMMAND; type <= NODE_SUBSHELL; type++) {
+        ASTNode *node = ast_create_node(type);
+
+        if (node == NULL || node->type != type) {
+            passed = false;
+            ast_destroy(node);
+            break;
+        }
+
+        ast_destroy(node);
+    }
+
+    test_result("Create all node types", passed);
+}
