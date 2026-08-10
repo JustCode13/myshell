@@ -50,3 +50,10 @@ static void test_create_all_nodes(void) {
 
     test_result("Create all node types", passed);
 }
+
+static void test_invalid_node_type(void) {
+    bool passed = ast_create_node((NodeType)-1) == NULL &&
+                  ast_create_node((NodeType)(NODE_SUBSHELL + 1)) == NULL;
+
+    test_result("Reject invalid node types", passed);
+}
