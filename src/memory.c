@@ -75,7 +75,6 @@ void *shell_realloc(void *ptr, size_t size) {
     void *memory = realloc(ptr, size);
 
     if (memory == NULL) {
-        free(ptr);
         return NULL;
     }
 
