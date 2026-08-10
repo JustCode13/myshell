@@ -57,3 +57,64 @@ static void test_invalid_node_type(void) {
 
     test_result("Reject invalid node types", passed);
 }
+
+static void test_validation(void) {
+    bool passed = true;
+
+    ASTNode *command = create_command();
+
+    if (command == NULL || !ast_validate(command)) {
+        passed = false;
+    }
+
+    ast_destroy(command);
+
+    NodeType binary_types[] = {NODE_PIPELINE, NODE_SEQUENCE, NODE_AND, NODE_OR};
+
+    for (size_t i = 0; i < 4 && passed; i++) {
+        ASTNode *node = ast_create_node(binary_types[i]);
+        ASTNode *left = create_command();
+        ASTNode *right = create_command();
+
+        if (node == NULL || left == NULL || right == NULL) {
+            passed = false;
+        } else {
+            node->left = left;
+            node->right = right;
+
+            if (!ast_validate(node)) {
+                passed = false;
+            }
+        }
+
+        ast_destroy(node);
+        if (node == NULL) {
+            ast_destroy(left);
+            ast_destroy(right);
+        }
+    }
+
+    NodeType unary_types[] = {NODE_BACKGROUND, NODE_SUBSHELL};
+
+    for (size_t i = 0; i < 2 && passed; i++) {
+        ASTNode *node = ast_create_node(unary_types[i]);
+        ASTNode *child = create_command();
+
+        if (node == NULL || child == NULL) {
+            passed = false;
+        } else {
+            node->left = child;
+
+            if (!ast_validate(node)) {
+                passed = false;
+            }
+        }
+
+        ast_destroy(node);
+        if (node == NULL) {
+            ast_destroy(child);
+        }
+    }
+
+    test_result("Validate valid AST nodes", passed);
+}
