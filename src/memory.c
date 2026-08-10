@@ -75,7 +75,7 @@ void *shell_realloc(void *ptr, size_t size) {
     void *memory = realloc(ptr, size);
 
     if (memory == NULL) {
-        free(memory);
+        free(ptr);
         return NULL;
     }
 
@@ -88,7 +88,6 @@ void shell_free(void *ptr) {
     }
 
     untrack_allocation(ptr);
-    free(ptr);
 }
 
 size_t memory_allocated_bytes(void) { return allocated_bytes; }
