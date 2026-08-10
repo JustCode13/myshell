@@ -1,6 +1,5 @@
 #include "../include/memory.h"
 
-
 #include <errno.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -68,13 +67,15 @@ void *shell_malloc(size_t size) {
 }
 
 void *shell_realloc(void *ptr, size_t size) {
-    if (ptr == NULL || size == 0) {
+    if (size == 0) {
+        free(ptr);
         return NULL;
     }
 
     void *memory = realloc(ptr, size);
 
     if (memory == NULL) {
+        free(memory);
         return NULL;
     }
 
