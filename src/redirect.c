@@ -50,5 +50,7 @@ int redirect_open_file(const Redirect *redir) {
         return -1;
     }
 
-    int fd = open_redirect_target(const Redirect *redir);
+    int fd = open_redirect_target(redir);
+
+    return fd;
 }
