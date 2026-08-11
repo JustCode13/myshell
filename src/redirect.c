@@ -34,3 +34,13 @@ static int open_redirect_target(Redirect *redir) {
 
     return redir->fd;
 }
+
+static int save_discriptor(int fd) {
+    if (fd < 0) {
+        return -1;
+    }
+
+    int saved_fd = dup(fd);
+
+    return saved_fd;
+}
