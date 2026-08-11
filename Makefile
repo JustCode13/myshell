@@ -13,10 +13,13 @@ SRC = main.c \
       src/error.c \
 	  src/lexer.c \
 	  src/ast.c \
+	  src/parser.c \
       src/string_builder.c \
       tests/test_memory.c \
 	  tests/test_prompt.c \
 	  tests/test_lexer.c \
+	  tests/test_parser.c \
+	  tests/test_ast.c \
 
 # Output executable
 TARGET = program

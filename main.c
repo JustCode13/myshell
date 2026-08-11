@@ -10,8 +10,8 @@ int main(void) {
     if (use_indent(5) != 0) {
         return -1;
     }
-
-    printf("Hello\n");
+    //
+    // printf("Hello\n");
 
     return 0;
 }

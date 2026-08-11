@@ -1,0 +1,774 @@
+============================================================
+                    PARSER TEST SUITE
+============================================================
+Total tests : 14
+
+
+============================================================
+INPUT: echo hello
+EXPECTED PARSE RESULT: SUCCESS
+============================================================
+
+[1] lexer_initialize()
+  ✓ Lexer initialized
+  input    : echo hello
+  position : 0
+  line     : 1
+  column   : 1
+  count    : 0
+  capacity : 64
+  tokens   : 0x51e000000080
+
+[2] lexer_tokenize()
+  ✓ Tokenization succeeded
+  token count    : 3
+  token capacity : 64
+
+[3] TOKENS
+------------------------------------------------------------
+Token[0]: type=WORD
+Token[1]: type=WORD
+Token[2]: type=END
+
+[4] parser_initialize()
+  ✓ Parser initialized
+  current    : 0
+  panic_mode : false
+  error      : (none)
+  lexer      : 0x7f4c44500060
+
+[5] parser_parse()
+  ✓ Parsing succeeded
+  root      : 0x506000000020
+  root type : 0
+
+[6] ast_validate()
+  ✓ AST validation succeeded
+
+[7] AST
+------------------------------------------------------------
+
+[8] FINAL PARSER STATE
+------------------------------------------------------------
+current    : 2
+panic_mode : false
+error      : (none)
+
+[9] ast_destroy()
+  ✓ AST destroyed
+
+[10] parser_destroy()
+  ✓ Parser destroyed
+
+[11] lexer_destroy()
+  ✓ Lexer destroyed
+
+TEST RESULT: PASS
+
+============================================================
+INPUT: echo hello world
+EXPECTED PARSE RESULT: SUCCESS
+============================================================
+
+[1] lexer_initialize()
+  ✓ Lexer initialized
+  input    : echo hello world
+  position : 0
+  line     : 1
+  column   : 1
+  count    : 0
+  capacity : 64
+  tokens   : 0x51e000000c80
+
+[2] lexer_tokenize()
+  ✓ Tokenization succeeded
+  token count    : 4
+  token capacity : 64
+
+[3] TOKENS
+------------------------------------------------------------
+Token[0]: type=WORD
+Token[1]: type=WORD
+Token[2]: type=WORD
+Token[3]: type=END
+
+[4] parser_initialize()
+  ✓ Parser initialized
+  current    : 0
+  panic_mode : false
+  error      : (none)
+  lexer      : 0x7f4c44500160
+
+[5] parser_parse()
+  ✓ Parsing succeeded
+  root      : 0x506000000080
+  root type : 0
+
+[6] ast_validate()
+  ✓ AST validation succeeded
+
+[7] AST
+------------------------------------------------------------
+
+[8] FINAL PARSER STATE
+------------------------------------------------------------
+current    : 3
+panic_mode : false
+error      : (none)
+
+[9] ast_destroy()
+  ✓ AST destroyed
+
+[10] parser_destroy()
+  ✓ Parser destroyed
+
+[11] lexer_destroy()
+  ✓ Lexer destroyed
+
+TEST RESULT: PASS
+
+============================================================
+INPUT: echo hello ; pwd
+EXPECTED PARSE RESULT: SUCCESS
+============================================================
+
+[1] lexer_initialize()
+  ✓ Lexer initialized
+  input    : echo hello ; pwd
+  position : 0
+  line     : 1
+  column   : 1
+  count    : 0
+  capacity : 64
+  tokens   : 0x51e000001880
+
+[2] lexer_tokenize()
+  ✓ Tokenization succeeded
+  token count    : 5
+  token capacity : 64
+
+[3] TOKENS
+------------------------------------------------------------
+Token[0]: type=WORD
+Token[1]: type=WORD
+Token[2]: type=SEMICOLON
+Token[3]: type=WORD
+Token[4]: type=END
+
+[4] parser_initialize()
+  ✓ Parser initialized
+  current    : 0
+  panic_mode : false
+  error      : (none)
+  lexer      : 0x7f4c44500260
+
+[5] parser_parse()
+  ✓ Parsing succeeded
+  root      : 0x5060000001a0
+  root type : 2
+
+[6] ast_validate()
+  ✓ AST validation succeeded
+
+[7] AST
+------------------------------------------------------------
+
+[8] FINAL PARSER STATE
+------------------------------------------------------------
+current    : 4
+panic_mode : false
+error      : (none)
+
+[9] ast_destroy()
+  ✓ AST destroyed
+
+[10] parser_destroy()
+  ✓ Parser destroyed
+
+[11] lexer_destroy()
+  ✓ Lexer destroyed
+
+TEST RESULT: PASS
+
+============================================================
+INPUT: echo hello | grep hello
+EXPECTED PARSE RESULT: SUCCESS
+============================================================
+
+[1] lexer_initialize()
+  ✓ Lexer initialized
+  input    : echo hello | grep hello
+  position : 0
+  line     : 1
+  column   : 1
+  count    : 0
+  capacity : 64
+  tokens   : 0x51e000002480
+
+[2] lexer_tokenize()
+  ✓ Tokenization succeeded
+  token count    : 6
+  token capacity : 64
+
+[3] TOKENS
+------------------------------------------------------------
+Token[0]: type=WORD
+Token[1]: type=WORD
+Token[2]: type=PIPE
+Token[3]: type=WORD
+Token[4]: type=WORD
+Token[5]: type=END
+
+[4] parser_initialize()
+  ✓ Parser initialized
+  current    : 0
+  panic_mode : false
+  error      : (none)
+  lexer      : 0x7f4c44500360
+
+[5] parser_parse()
+  ✓ Parsing succeeded
+  root      : 0x5060000002c0
+  root type : 1
+
+[6] ast_validate()
+  ✓ AST validation succeeded
+
+[7] AST
+------------------------------------------------------------
+
+[8] FINAL PARSER STATE
+------------------------------------------------------------
+current    : 5
+panic_mode : false
+error      : (none)
+
+[9] ast_destroy()
+  ✓ AST destroyed
+
+[10] parser_destroy()
+  ✓ Parser destroyed
+
+[11] lexer_destroy()
+  ✓ Lexer destroyed
+
+TEST RESULT: PASS
+
+============================================================
+INPUT: echo hello && pwd
+EXPECTED PARSE RESULT: SUCCESS
+============================================================
+
+[1] lexer_initialize()
+  ✓ Lexer initialized
+  input    : echo hello && pwd
+  position : 0
+  line     : 1
+  column   : 1
+  count    : 0
+  capacity : 64
+  tokens   : 0x51e000003080
+
+[2] lexer_tokenize()
+  ✓ Tokenization succeeded
+  token count    : 5
+  token capacity : 64
+
+[3] TOKENS
+------------------------------------------------------------
+Token[0]: type=WORD
+Token[1]: type=WORD
+Token[2]: type=AND
+Token[3]: type=WORD
+Token[4]: type=END
+
+[4] parser_initialize()
+  ✓ Parser initialized
+  current    : 0
+  panic_mode : false
+  error      : (none)
+  lexer      : 0x7f4c44500460
+
+[5] parser_parse()
+  ✓ Parsing succeeded
+  root      : 0x5060000003e0
+  root type : 3
+
+[6] ast_validate()
+  ✓ AST validation succeeded
+
+[7] AST
+------------------------------------------------------------
+
+[8] FINAL PARSER STATE
+------------------------------------------------------------
+current    : 4
+panic_mode : false
+error      : (none)
+
+[9] ast_destroy()
+  ✓ AST destroyed
+
+[10] parser_destroy()
+  ✓ Parser destroyed
+
+[11] lexer_destroy()
+  ✓ Lexer destroyed
+
+TEST RESULT: PASS
+
+============================================================
+INPUT: echo hello || pwd
+EXPECTED PARSE RESULT: SUCCESS
+============================================================
+
+[1] lexer_initialize()
+  ✓ Lexer initialized
+  input    : echo hello || pwd
+  position : 0
+  line     : 1
+  column   : 1
+  count    : 0
+  capacity : 64
+  tokens   : 0x51e000003c80
+
+[2] lexer_tokenize()
+  ✓ Tokenization succeeded
+  token count    : 5
+  token capacity : 64
+
+[3] TOKENS
+------------------------------------------------------------
+Token[0]: type=WORD
+Token[1]: type=WORD
+Token[2]: type=OR
+Token[3]: type=WORD
+Token[4]: type=END
+
+[4] parser_initialize()
+  ✓ Parser initialized
+  current    : 0
+  panic_mode : false
+  error      : (none)
+  lexer      : 0x7f4c44500560
+
+[5] parser_parse()
+  ✓ Parsing succeeded
+  root      : 0x506000000500
+  root type : 4
+
+[6] ast_validate()
+  ✓ AST validation succeeded
+
+[7] AST
+------------------------------------------------------------
+
+[8] FINAL PARSER STATE
+------------------------------------------------------------
+current    : 4
+panic_mode : false
+error      : (none)
+
+[9] ast_destroy()
+  ✓ AST destroyed
+
+[10] parser_destroy()
+  ✓ Parser destroyed
+
+[11] lexer_destroy()
+  ✓ Lexer destroyed
+
+TEST RESULT: PASS
+
+============================================================
+INPUT: echo hello > output.txt
+EXPECTED PARSE RESULT: SUCCESS
+============================================================
+
+[1] lexer_initialize()
+  ✓ Lexer initialized
+  input    : echo hello > output.txt
+  position : 0
+  line     : 1
+  column   : 1
+  count    : 0
+  capacity : 64
+  tokens   : 0x51e000004880
+
+[2] lexer_tokenize()
+  ✓ Tokenization succeeded
+  token count    : 5
+  token capacity : 64
+
+[3] TOKENS
+------------------------------------------------------------
+Token[0]: type=WORD
+Token[1]: type=WORD
+Token[2]: type=REDIR_OUT
+Token[3]: type=WORD
+Token[4]: type=END
+
+[4] parser_initialize()
+  ✓ Parser initialized
+  current    : 0
+  panic_mode : false
+  error      : (none)
+  lexer      : 0x7f4c44500660
+
+[5] parser_parse()
+  ✓ Parsing succeeded
+  root      : 0x506000000560
+  root type : 0
+
+[6] ast_validate()
+  ✓ AST validation succeeded
+
+[7] AST
+------------------------------------------------------------
+
+[8] FINAL PARSER STATE
+------------------------------------------------------------
+current    : 4
+panic_mode : false
+error      : (none)
+
+[9] ast_destroy()
+  ✓ AST destroyed
+
+[10] parser_destroy()
+  ✓ Parser destroyed
+
+[11] lexer_destroy()
+  ✓ Lexer destroyed
+
+TEST RESULT: PASS
+
+============================================================
+INPUT: echo hello < input.txt
+EXPECTED PARSE RESULT: SUCCESS
+============================================================
+
+[1] lexer_initialize()
+  ✓ Lexer initialized
+  input    : echo hello < input.txt
+  position : 0
+  line     : 1
+  column   : 1
+  count    : 0
+  capacity : 64
+  tokens   : 0x51e000005480
+
+[2] lexer_tokenize()
+  ✓ Tokenization succeeded
+  token count    : 5
+  token capacity : 64
+
+[3] TOKENS
+------------------------------------------------------------
+Token[0]: type=WORD
+Token[1]: type=WORD
+Token[2]: type=REDIR_IN
+Token[3]: type=WORD
+Token[4]: type=END
+
+[4] parser_initialize()
+  ✓ Parser initialized
+  current    : 0
+  panic_mode : false
+  error      : (none)
+  lexer      : 0x7f4c44500760
+
+[5] parser_parse()
+  ✓ Parsing succeeded
+  root      : 0x5060000005c0
+  root type : 0
+
+[6] ast_validate()
+  ✓ AST validation succeeded
+
+[7] AST
+------------------------------------------------------------
+
+[8] FINAL PARSER STATE
+------------------------------------------------------------
+current    : 4
+panic_mode : false
+error      : (none)
+
+[9] ast_destroy()
+  ✓ AST destroyed
+
+[10] parser_destroy()
+  ✓ Parser destroyed
+
+[11] lexer_destroy()
+  ✓ Lexer destroyed
+
+TEST RESULT: PASS
+
+============================================================
+INPUT: echo hello >> output.txt
+EXPECTED PARSE RESULT: SUCCESS
+============================================================
+
+[1] lexer_initialize()
+  ✓ Lexer initialized
+  input    : echo hello >> output.txt
+  position : 0
+  line     : 1
+  column   : 1
+  count    : 0
+  capacity : 64
+  tokens   : 0x51e000006080
+
+[2] lexer_tokenize()
+  ✓ Tokenization succeeded
+  token count    : 5
+  token capacity : 64
+
+[3] TOKENS
+------------------------------------------------------------
+Token[0]: type=WORD
+Token[1]: type=WORD
+Token[2]: type=APPEND
+Token[3]: type=WORD
+Token[4]: type=END
+
+[4] parser_initialize()
+  ✓ Parser initialized
+  current    : 0
+  panic_mode : false
+  error      : (none)
+  lexer      : 0x7f4c44500860
+
+[5] parser_parse()
+  ✓ Parsing succeeded
+  root      : 0x506000000620
+  root type : 0
+
+[6] ast_validate()
+  ✓ AST validation succeeded
+
+[7] AST
+------------------------------------------------------------
+
+[8] FINAL PARSER STATE
+------------------------------------------------------------
+current    : 4
+panic_mode : false
+error      : (none)
+
+[9] ast_destroy()
+  ✓ AST destroyed
+
+[10] parser_destroy()
+  ✓ Parser destroyed
+
+[11] lexer_destroy()
+  ✓ Lexer destroyed
+
+TEST RESULT: PASS
+
+============================================================
+INPUT: echo hello |
+EXPECTED PARSE RESULT: FAILURE
+============================================================
+
+[1] lexer_initialize()
+  ✓ Lexer initialized
+  input    : echo hello |
+  position : 0
+  line     : 1
+  column   : 1
+  count    : 0
+  capacity : 64
+  tokens   : 0x51e000006c80
+
+[2] lexer_tokenize()
+  ✓ Tokenization succeeded
+  token count    : 4
+  token capacity : 64
+
+[3] TOKENS
+------------------------------------------------------------
+Token[0]: type=WORD
+Token[1]: type=WORD
+Token[2]: type=PIPE
+Token[3]: type=END
+
+[4] parser_initialize()
+  ✓ Parser initialized
+  current    : 0
+  panic_mode : false
+  error      : (none)
+  lexer      : 0x7f4c44500960
+
+[5] parser_parse()
+  ✗ Parsing failed
+  error: Invalid first token
+  ✓ Expected parser failure
+
+============================================================
+INPUT: echo hello &&
+EXPECTED PARSE RESULT: FAILURE
+============================================================
+
+[1] lexer_initialize()
+  ✓ Lexer initialized
+  input    : echo hello &&
+  position : 0
+  line     : 1
+  column   : 1
+  count    : 0
+  capacity : 64
+  tokens   : 0x51e000007880
+
+[2] lexer_tokenize()
+  ✓ Tokenization succeeded
+  token count    : 4
+  token capacity : 64
+
+[3] TOKENS
+------------------------------------------------------------
+Token[0]: type=WORD
+Token[1]: type=WORD
+Token[2]: type=AND
+Token[3]: type=END
+
+[4] parser_initialize()
+  ✓ Parser initialized
+  current    : 0
+  panic_mode : false
+  error      : (none)
+  lexer      : 0x7f4c44500a60
+
+[5] parser_parse()
+  ✗ Parsing failed
+  error: Invalid first token
+  ✓ Expected parser failure
+
+============================================================
+INPUT: echo hello ;
+EXPECTED PARSE RESULT: FAILURE
+============================================================
+
+[1] lexer_initialize()
+  ✓ Lexer initialized
+  input    : echo hello ;
+  position : 0
+  line     : 1
+  column   : 1
+  count    : 0
+  capacity : 64
+  tokens   : 0x51e000008480
+
+[2] lexer_tokenize()
+  ✓ Tokenization succeeded
+  token count    : 4
+  token capacity : 64
+
+[3] TOKENS
+------------------------------------------------------------
+Token[0]: type=WORD
+Token[1]: type=WORD
+Token[2]: type=SEMICOLON
+Token[3]: type=END
+
+[4] parser_initialize()
+  ✓ Parser initialized
+  current    : 0
+  panic_mode : false
+  error      : (none)
+  lexer      : 0x7f4c44500b60
+
+[5] parser_parse()
+  ✗ Parsing failed
+  error: Invalid first token
+  ✓ Expected parser failure
+
+============================================================
+INPUT: echo hello >
+EXPECTED PARSE RESULT: FAILURE
+============================================================
+
+[1] lexer_initialize()
+  ✓ Lexer initialized
+  input    : echo hello >
+  position : 0
+  line     : 1
+  column   : 1
+  count    : 0
+  capacity : 64
+  tokens   : 0x51e000009080
+
+[2] lexer_tokenize()
+  ✓ Tokenization succeeded
+  token count    : 4
+  token capacity : 64
+
+[3] TOKENS
+------------------------------------------------------------
+Token[0]: type=WORD
+Token[1]: type=WORD
+Token[2]: type=REDIR_OUT
+Token[3]: type=END
+
+[4] parser_initialize()
+  ✓ Parser initialized
+  current    : 0
+  panic_mode : false
+  error      : (none)
+  lexer      : 0x7f4c44500c60
+
+[5] parser_parse()
+  ✗ Parsing failed
+  error: (no error message)
+  ✓ Expected parser failure
+
+============================================================
+INPUT: echo hello <
+EXPECTED PARSE RESULT: FAILURE
+============================================================
+
+[1] lexer_initialize()
+  ✓ Lexer initialized
+  input    : echo hello <
+  position : 0
+  line     : 1
+  column   : 1
+  count    : 0
+  capacity : 64
+  tokens   : 0x51e000009c80
+
+[2] lexer_tokenize()
+  ✓ Tokenization succeeded
+  token count    : 4
+  token capacity : 64
+
+[3] TOKENS
+------------------------------------------------------------
+Token[0]: type=WORD
+Token[1]: type=WORD
+Token[2]: type=REDIR_IN
+Token[3]: type=END
+
+[4] parser_initialize()
+  ✓ Parser initialized
+  current    : 0
+  panic_mode : false
+  error      : (none)
+  lexer      : 0x7f4c44500d60
+
+[5] parser_parse()
+  ✗ Parsing failed
+  error: (no error message)
+  ✓ Expected parser failure
+
+============================================================
+                    TEST SUMMARY
+============================================================
+Total : 14
+Pass  : 14
+Fail  : 0
+
+TEST SUITE: PASSED
