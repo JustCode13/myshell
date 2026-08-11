@@ -7,4 +7,6 @@ static int open_redirect_target(Redirect *redir) {
     if (redir == NULL) {
         return -1;
     }
+
+    switch (redir->type) {}
 }
