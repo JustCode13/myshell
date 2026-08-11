@@ -8,5 +8,29 @@ static int open_redirect_target(Redirect *redir) {
         return -1;
     }
 
-    switch (redir->type) {}
+    if (redir->target == NULL || redir->target[0] == '\0') {
+        return -1;
+    }
+
+    switch (redir->type) {
+    case REDIR_INPUT:
+        redir->fd = open(redir->target, O_RDONLY);
+        break;
+
+    case REDIR_OUTPUT:
+        redir->fd = open(redir->target, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        break;
+
+    case REDIR_APPEND:
+        redir->fd = open(redir->target, O_WRONLY | O_CREAT | O_APPEND, 0644);
+        break;
+
+    case REDIR_HEREDOC:
+        return -1;
+
+    default:
+        return -1;
+    }
+
+    return redir->fd;
 }
