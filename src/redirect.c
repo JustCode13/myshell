@@ -54,3 +54,45 @@ int redirect_open_file(const Redirect *redir) {
 
     return fd;
 }
+
+int redirect_apply(Redirect *list) {
+    if (list == NULL) {
+        return 0;
+    }
+
+    Redirect *current = list;
+
+    while (current != NULL) {
+
+        int saved_fd = save_descriptor(current->fd);
+
+        if (saved_fd == -1) {
+            close(saved_fd);
+
+            return -1;
+        }
+
+        int opened_fd = redirect_open_file(current);
+
+        if (opened_fd == -1) {
+            close(saved_fd);
+
+            return -1;
+        }
+
+        if (dup2(opened_fd, current->fd) < 0) {
+            close(opened_fd);
+            close(saved_fd);
+
+            return -1;
+        }
+
+        if (close(opened_fd) < 0) {
+            return -1;
+        }
+
+        current = current->next;
+    }
+
+    return 0;
+}
