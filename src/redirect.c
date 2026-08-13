@@ -147,3 +147,23 @@ int redirect_restore(void) {
 
     return 0;
 }
+
+void redirect_close_saved(void) {
+    if (saved_stdin >= 0) {
+        if (close(saved_stdin) < 0) {
+            return;
+        }
+
+        saved_stdin = -1;
+    }
+
+    if (saved_stdout >= 0) {
+        if (close(saved_stdout) < 0) {
+            return;
+        }
+
+        saved_stdout = -1;
+    }
+
+    return;
+}
