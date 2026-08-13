@@ -5,7 +5,7 @@
 
 int redirect_apply(Redirect *list);
 
-int redirect_store(void);
+int redirect_restore(void);
 
 int redirect_open_file(const Redirect *redir);
 
