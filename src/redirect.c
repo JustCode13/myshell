@@ -1,10 +1,51 @@
 #include "../include/redirect.h"
+#include "../include/memory.h"
 
 #include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 static int saved_stdin = -1;
 static int saved_stdout = -1;
+
+static int create_heredoc(const char *delimiter) {
+    int pipe_fd[2];
+    char *line = NULL;
+    size_t capacity = 0;
+
+    if (delimiter == NULL || delimiter[0] == '\0') {
+        return -1;
+    }
+
+    if (pipe(pipe_fd) == -1) {
+        return -1;
+    }
+
+    while (1) {
+        ssize_t length = getline(&line, &capacity, stdin);
+
+        if (length == -1) {
+            break;
+        }
+
+        if (length > 0 && line[length - 1] == '\n') {
+            line[length - 1] = '\0';
+        }
+
+        if (strcmp(line, delimiter) == 0) {
+            break;
+        }
+
+        dprintf(pipe_fd[1], "%s\n", line);
+    }
+
+    shell_free(line);
+    close(pipe_fd[1]);
+
+    return pipe_fd[0];
+}
 
 static int open_redirect_target(const Redirect *redir) {
     if (redir == NULL) {
@@ -26,7 +67,7 @@ static int open_redirect_target(const Redirect *redir) {
         return open(redir->target, O_WRONLY | O_CREAT | O_APPEND, 0644);
 
     case REDIR_HEREDOC:
-        return -1;
+        return create_heredoc(redir->target);
 
     default:
         return -1;
