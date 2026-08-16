@@ -7,6 +7,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -47,29 +48,18 @@ int process_resolve_path(const char *file, char *buffer, size_t capacity) {
     }
 
     if (strchr(file, '/') != NULL) {
-        if (access(file, F_OK | R_OK | W_OK | X_OK) == -1) {
-            return -1;
-        }
-
         if (sizeof(file) > capacity) {
             return -1;
         }
 
-        int bytes_written = snprintf(buffer, capacity, "%s\n", file);
+        int written = snprintf(buffer, capacity, "./%s", file);
 
-        if (bytes_written < 0) {
-            return -1;
+        if (written >= 0 && (size_t)written < capacity &&
+            access(buffer, X_OK) == 0) {
+            return 0;
         }
-
-        return 0;
     } else {
-        const char *path = getenv("PATH");
-
-        if (path == NULL) {
-            return -1;
-        }
-
-        const char *start = path;
+        const char *start = getenv("PATH");
 
         while (true) {
             const char *end = strchr(start, ':');
@@ -85,7 +75,9 @@ int process_resolve_path(const char *file, char *buffer, size_t capacity) {
             size_t required_size = directory_length + file_length + 2;
 
             if (required_size <= capacity) {
+
                 if (directory_length == 0) {
+
                     int written = snprintf(buffer, capacity, "./%s", file);
 
                     if (written >= 0 && (size_t)written < capacity &&
