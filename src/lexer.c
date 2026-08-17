@@ -40,23 +40,69 @@ static int lex_word(Lexer *lexer) {
         return -1;
     }
 
+    StringBuilder *sb = shell_malloc(sizeof(StringBuilder));
+
+    if (sb == NULL) {
+        return -1;
+    }
+
+    if (sb_initialize(sb, STRING_BUILDER_INITIAL_SIZE) != 0) {
+        return -1;
+    }
+
     size_t start_position = lexer->position;
     const char *start_address = lexer->input + lexer->position;
 
-    while (lexer->input[lexer->position] != '\0' &&
-           !isspace((unsigned char)lexer->input[lexer->position]) &&
-           !is_operator_char(lexer->input[lexer->position])) {
+    bool is_space = false;
+    bool is_escape_char = false;
+
+    while (
+        lexer->input[lexer->position] != '\0' && // hello\\ world
+        (!isspace((unsigned char)lexer->input[lexer->position]) || is_space) &&
+        !is_operator_char(lexer->input[lexer->position])) {
+
+        if (lexer->input[lexer->position] != '\\') {
+
+            if (sb_append_char(sb, lexer->input[lexer->position]) != 0) {
+                free(sb);
+                return -1;
+            }
+        }
+
+        if (lexer->input[lexer->position] == '\\' && !is_space) {
+            is_space = true;
+            is_escape_char = true;
+        } else if (is_space == true && isspace(lexer->input[lexer->position])) {
+            is_space = false;
+        }
+
         lexer->position++;
         lexer->column++;
     }
 
     size_t length = lexer->position - start_position;
 
-    if (append_token(lexer, TOKEN_WORD, start_address, length) != 0) {
-        return -1;
+    if (is_escape_char) {
+        char *test = sb_duplicate(sb);
+
+        if (append_token(lexer, TOKEN_WORD, test, sb->length) != 0) {
+            free(sb->buffer);
+            free(sb);
+
+            return -1;
+        }
+
+        return 0;
+    } else {
+
+        if (append_token(lexer, TOKEN_WORD, start_address, length) != 0) {
+            return -1;
+        }
+
+        return 0;
     }
 
-    return 0;
+    return -1;
 }
 
 static int is_quote_char(const char c) { return c == '\'' || c == '\"'; }
@@ -292,7 +338,7 @@ int lexer_tokenize(Lexer *lexer) {
             lexer->position++;
             continue;
         } else if (is_quote_char(lexer->input[lexer->position])) {
-            if (quote_strings(lexer) != 0) {
+            if (quote_word(lexer) != 0) {
                 return -1;
             }
 
