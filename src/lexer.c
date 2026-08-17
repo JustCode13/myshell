@@ -61,7 +61,7 @@ static int lex_word(Lexer *lexer) {
 
 static int is_quote_char(const char c) { return c == '\'' || c == '\"'; }
 
-static int quote_strings(Lexer *lexer) {
+static int quote_word(Lexer *lexer) {
     if (lexer == NULL || lexer->input == NULL) {
         return -1;
     }
