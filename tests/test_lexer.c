@@ -1,90 +1,58 @@
 #include "../include/lexer.h"
-#include "../include/memory.h"
-#include "../include/prompt.h"
+
 #include <stddef.h>
 #include <stdio.h>
-#include <string.h>
+
+static const char *expected_token_name(TokenType type) {
+    return token_type_name(type);
+}
 
 int test_lexer(void) {
-    Lexer *lexer = shell_malloc(sizeof(Lexer));
+    const char *input = "echo \"hello, 5 & 7 world\"";
 
-    ShellContext *ctx = shell_malloc(sizeof(ShellContext));
+    Lexer lexer;
 
-    if (lexer == NULL || ctx == NULL) {
-        free(lexer);
-        free(ctx);
+    if (lexer_initialize(&lexer, input) != 0) {
+        printf("FAIL: lexer_initialize()\n");
         return -1;
     }
 
-    if (prompt_initialize(ctx) != 0) {
-        free(lexer);
-        free(ctx);
+    if (lexer_tokenize(&lexer) != 0) {
+        printf("FAIL: lexer_tokenize()\n");
+        lexer_destroy(&lexer);
         return -1;
     }
 
-    prompt_update(ctx);
+    printf("Input: %s\n\n", input);
 
-    char *buffer = NULL;
-    size_t length = 0;
+    printf("Tokens: %zu\n", lexer.count);
 
-    while (1) {
+    for (size_t i = 0; i < lexer.count; i++) {
+        const Token *token = lexer_peek(&lexer, i);
 
-        printf("%s", ctx->prompt);
-        fflush(stdout);
-
-        if (prompt_read_line(&buffer, &length) != 0) {
-            shell_free(buffer);
-            shell_free(lexer);
-            shell_free(ctx);
+        if (token == NULL) {
+            printf("FAIL: lexer_peek(%zu) returned NULL\n", i);
+            lexer_destroy(&lexer);
             return -1;
         }
 
-        if (strcmp(buffer, "exit") == 0) {
-            break;
-        }
-
-        if (lexer_initialize(lexer, (const char *)buffer) != 0) {
-            shell_free(buffer);
-            shell_free(lexer);
-            shell_free(ctx);
-            printf("lexer_initialize\n");
-            return -1;
-        }
-
-        if (lexer_tokenize(lexer) == -1) {
-            shell_free(buffer);
-            shell_free(lexer);
-            shell_free(ctx);
-            printf("lexer_tokenize\n");
-            return -1;
-        }
-
-        for (size_t i = 0; i < lexer->count; i++) {
-            const Token *token = lexer_peek(lexer, i);
-
-            if (token == NULL) {
-                shell_free(buffer);
-                shell_free(lexer);
-                shell_free(ctx);
-                return -1;
-            }
-
-            const char *token_name = token_type_name(token->type);
-
-            printf("Token Type: %d, %s\n", token->type, token_name);
-            printf("Text: %.*s\n", (int)token->length, token->text);
-            printf("Length: %zu\n", token->length);
-            printf("Line: %zu\n", token->line);
-            printf("Column: %zu\n", token->column);
-
-            printf(
-                "--------------------------------------------------------\n");
-        }
+        printf("[%zu] %-10s text=\"%s\" length=%zu line=%zu column=%zu\n", i,
+               expected_token_name(token->type),
+               token->text != NULL ? token->text : "", token->length,
+               token->line, token->column);
     }
 
-    shell_free(buffer);
-    shell_free(lexer);
-    shell_free(ctx);
+    const Token *last = lexer_peek(&lexer, lexer.count - 1);
+
+    if (last == NULL || last->type != TOKEN_END) {
+        printf("\nFAIL: TOKEN_END is missing\n");
+        lexer_destroy(&lexer);
+        return -1;
+    }
+
+    printf("\nPASS: lexer produced valid tokens and TOKEN_END\n");
+
+    lexer_destroy(&lexer);
 
     return 0;
 }
