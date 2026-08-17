@@ -94,7 +94,7 @@ char *sb_duplicate(StringBuilder *builder) {
         return NULL;
     }
 
-    strcpy(des_buffer, builder->buffer);
+    memcpy(des_buffer, builder->buffer, builder->length);
 
     return des_buffer;
 }
