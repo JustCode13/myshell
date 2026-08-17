@@ -74,12 +74,8 @@ static int quote_strings(Lexer *lexer) {
         return -1;
     }
 
-    printf("%zu\n", lexer->position);
-
     const char *current_address = &lexer->input[lexer->position + 1];
     size_t current_position = lexer->position + 1;
-
-    printf("position: %zu\n", lexer->position);
 
     while (inside_quote == false || lexer->input[lexer->position] != '\0') {
 
