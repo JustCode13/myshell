@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -54,6 +55,59 @@ static int lex_word(Lexer *lexer) {
     if (append_token(lexer, TOKEN_WORD, start_address, length) != 0) {
         return -1;
     }
+
+    return 0;
+}
+
+static int is_quote_char(const char c) { return c == '\'' || c == '\"'; }
+
+static int quote_strings(Lexer *lexer) {
+    if (lexer == NULL || lexer->input == NULL) {
+        return -1;
+    }
+
+    bool inside_quote = false;
+
+    const char current_char = lexer->input[lexer->position];
+
+    if (is_quote_char(current_char) != 1) {
+        return -1;
+    }
+
+    printf("%zu\n", lexer->position);
+
+    const char *current_address = &lexer->input[lexer->position + 1];
+    size_t current_position = lexer->position + 1;
+
+    printf("position: %zu\n", lexer->position);
+
+    while (inside_quote == false || lexer->input[lexer->position] != '\0') {
+
+        if (is_quote_char(current_char) && inside_quote == false) {
+            lexer->position++;
+            inside_quote = true;
+        }
+
+        if (is_quote_char(lexer->input[lexer->position]) &&
+            inside_quote == true) {
+            inside_quote = false;
+            break;
+        }
+
+        lexer->position++;
+    }
+
+    if (inside_quote == true) {
+        return -1;
+    }
+
+    size_t length = lexer->position - current_position;
+
+    if (append_token(lexer, TOKEN_WORD, current_address, length) != 0) {
+        return -1;
+    }
+
+    lexer->position++;
 
     return 0;
 }
@@ -241,6 +295,11 @@ int lexer_tokenize(Lexer *lexer) {
 
             lexer->position++;
             continue;
+        } else if (is_quote_char(lexer->input[lexer->position])) {
+            if (quote_strings(lexer) != 0) {
+                return -1;
+            }
+
         } else if (is_operator_char(lexer->input[lexer->position])) {
             if (lex_operator(lexer) != 0) {
                 return -1;
