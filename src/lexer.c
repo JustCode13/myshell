@@ -385,10 +385,10 @@ void lexer_destroy(Lexer *lexer) {
     lexer->tokens = NULL;
     lexer->input = NULL;
 
-    lexer->line = 0;
-    lexer->column = 0;
+    lexer->line = 1;
+    lexer->column = 1;
     lexer->count = 0;
-    lexer->capacity = 0;
+    lexer->capacity = LEXER_INITIAL_CAPACITY;
 
     return;
 }
