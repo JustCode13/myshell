@@ -4,7 +4,6 @@
 
 #include <ctype.h>
 #include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -80,12 +79,10 @@ static int lex_word(Lexer *lexer) {
         lexer->column++;
     }
 
-    size_t length = lexer->position - start_position;
-
     if (is_escape_char) {
-        char *test = sb_duplicate(sb);
+        char *text = sb_duplicate(sb);
 
-        if (append_token(lexer, TOKEN_WORD, test, sb->length) != 0) {
+        if (append_token(lexer, TOKEN_WORD, text, sb->length) != 0) {
             free(sb->buffer);
             free(sb);
 
@@ -94,6 +91,8 @@ static int lex_word(Lexer *lexer) {
 
         return 0;
     } else {
+
+        size_t length = lexer->position - start_position;
 
         if (append_token(lexer, TOKEN_WORD, start_address, length) != 0) {
             return -1;
@@ -155,7 +154,7 @@ static int quote_word(Lexer *lexer) {
 }
 
 static int lex_operator(Lexer *lexer) {
-    if (lexer == NULL) {
+    if (lexer == NULL || lexer->input == NULL) {
         return -1;
     }
 
